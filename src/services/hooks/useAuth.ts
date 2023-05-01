@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { authApi } from '../api/auth/authApi';
 import { Token } from '../../types/auth/token';
-import { useNavigate } from 'react-router-dom';
+import { User } from '../../types/user/user';
 
 type Auth = {
   loading: boolean;
@@ -10,7 +12,6 @@ type Auth = {
   logout: () => void;
 }
 
-// ログインカスタムフック
 export const useAuth = (): Auth => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,6 +34,10 @@ export const useAuth = (): Auth => {
       // セッショントークンとアクセストークンを保存
       localStorage.setItem('access', response.access);
       localStorage.setItem('refresh', response.refresh);
+      // ユーザー情報を取得
+      const user: User = await authApi.getUserByToken(response.access);
+      // ユーザー情報を保存
+      localStorage.setItem('user', JSON.stringify(user));
       setLoading(false);
       navigate("/");
     }
