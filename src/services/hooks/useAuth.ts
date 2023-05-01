@@ -32,7 +32,7 @@ export const useAuth = (): Auth => {
       // ログイン処理
       const response: Token = await authApi.login(email, password);
       // セッショントークンとアクセストークンを保存
-      localStorage.setItem('access', response.access);
+      sessionStorage.setItem('access', response.access);
       localStorage.setItem('refresh', response.refresh);
       // ユーザー情報を取得
       const user: User = await authApi.getUserByToken(response.access);
@@ -50,6 +50,10 @@ export const useAuth = (): Auth => {
 
   // ログアウト処理
   const logout = useCallback(() => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('user');
+    navigate("/login");
   }, []);
 
   return { loading, errorMessage, login, logout };
