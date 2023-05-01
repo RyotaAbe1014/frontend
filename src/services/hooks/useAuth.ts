@@ -50,7 +50,7 @@ export const useAuth = (): Auth => {
 
   // ログアウト処理
   const logout = useCallback(() => {
-    localStorage.removeItem('access');
+    sessionStorage.removeItem('access');
     localStorage.removeItem('refresh');
     localStorage.removeItem('user');
     navigate("/login");
