@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 import { authApi } from '../api/auth/authApi';
 import { Token } from '../../types/auth/token';
@@ -10,6 +11,7 @@ type Auth = {
   errorMessage: string | undefined;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  isLogin: () => boolean;
 }
 
 export const useAuth = (): Auth => {
@@ -45,7 +47,6 @@ export const useAuth = (): Auth => {
       setLoading(false);
       setErrorMessage(error.message);
     }
-
   }, []);
 
   // ログアウト処理
@@ -56,5 +57,21 @@ export const useAuth = (): Auth => {
     navigate("/login");
   }, []);
 
-  return { loading, errorMessage, login, logout };
+  // ログイン判定
+  const isLogin = useCallback(() => {
+    const access = sessionStorage.getItem('access');
+    const refresh = localStorage.getItem('refresh');
+    if (access && refresh) {
+      const decoded: any = jwt_decode(access);
+      const now = new Date().getTime() / 1000;
+      if (now > decoded.exp) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }, []);
+
+
+  return { loading, errorMessage, login, logout, isLogin };
 }
