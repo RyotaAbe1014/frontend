@@ -60,6 +60,7 @@ export const useAuth = (): Auth => {
   // ログイン判定
   const isLogin = useCallback(async () => {
     const access = sessionStorage.getItem('access');
+    console.log(access);
     const refresh = localStorage.getItem('refresh');
     if (access && refresh) {
       const decoded: any = jwt_decode(access);
@@ -67,9 +68,11 @@ export const useAuth = (): Auth => {
       if (now > decoded.exp) {
         // アクセストークンの時間切れの場合はリフレッシュトークンからアクセストークンを取得
         try {
+          sessionStorage.removeItem('access');
           const res = await authApi.refresh(refresh);
           sessionStorage.setItem('access', res);
-          return true;
+          console.log('アクセストークンを更新しました。');
+          isLogin();
         } catch (error) {
           console.log(error);
           logout();

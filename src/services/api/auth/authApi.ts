@@ -28,7 +28,6 @@ const getUserByToken = async (accessToken: string): Promise<User> => {
       }
     }
   ).then((res: AxiosResponse) => {
-    console.log(res.data);
     return res.data as User;
   }).catch((error: AxiosError) => {
     console.log(error);
@@ -44,7 +43,8 @@ const refresh = async (refreshToken: string): Promise<string> => {
       "refresh": refreshToken
     }
   ).then((res: AxiosResponse) => {
-    return res.data as string;
+    console.log(res.data);
+    return res.data.access as string;
   }).catch((error: AxiosError) => {
     console.log(error);
     throw new Error("アクセストークンの取得に失敗しました。");
