@@ -35,6 +35,22 @@ const getUserByToken = async (accessToken: string): Promise<User> => {
     throw new Error("ユーザー情報の取得に失敗しました。");
   });
 }
+
+
+// リフレッシュトークンからアクセストークンを取得
+const refresh = async (refreshToken: string): Promise<string> => {
+  return await baseAPI.post('/auth/token/refresh/',
+    {
+      "refresh": refreshToken
+    }
+  ).then((res: AxiosResponse) => {
+    return res.data as string;
+  }).catch((error: AxiosError) => {
+    console.log(error);
+    throw new Error("アクセストークンの取得に失敗しました。");
+  });
+}
+
 export const authApi = {
-  login, getUserByToken,
+  login, getUserByToken, refresh
 }
