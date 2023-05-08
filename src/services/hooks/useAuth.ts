@@ -71,7 +71,6 @@ export const useAuth = (): Auth => {
           sessionStorage.removeItem('access');
           const res = await authApi.refresh(refresh);
           sessionStorage.setItem('access', res);
-          console.log('アクセストークンを更新しました。');
           isLogin();
         } catch (error) {
           console.log(error);
