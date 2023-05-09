@@ -68,7 +68,6 @@ export const useAuth = (): Auth => {
       if (now > decoded.exp) {
         // アクセストークンの時間切れの場合はリフレッシュトークンからアクセストークンを取得
         try {
-          sessionStorage.removeItem('access');
           const res = await authApi.refresh(refresh);
           sessionStorage.setItem('access', res);
           console.log("アクセストークンを生成した");
