@@ -11,7 +11,7 @@ type Auth = {
   errorMessage: string | undefined;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  isLogin: () => boolean;
+  isLogin: () => Promise<boolean>;
 }
 
 export const useAuth = (): Auth => {
@@ -58,19 +58,32 @@ export const useAuth = (): Auth => {
   }, []);
 
   // ログイン判定
-  const isLogin = useCallback(() => {
+  const isLogin = useCallback(async (): Promise<boolean> => {
     const access = sessionStorage.getItem('access');
     const refresh = localStorage.getItem('refresh');
     if (access && refresh) {
+      console.log(access);
       const decoded: any = jwt_decode(access);
       const now = new Date().getTime() / 1000;
       if (now > decoded.exp) {
-        return false;
+        // アクセストークンの時間切れの場合はリフレッシュトークンからアクセストークンを取得
+        try {
+          const res = await authApi.refresh(refresh);
+          sessionStorage.setItem('access', res);
+          console.log("アクセストークンを生成した");
+          return true;
+        } catch (error) {
+          console.log(error);
+          logout();
+          return false;
+        }
       }
       return true;
     }
+    console.log(access)
     return false;
   }, []);
+  
 
 
   return { loading, errorMessage, login, logout, isLogin };

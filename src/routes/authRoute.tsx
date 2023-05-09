@@ -13,14 +13,18 @@ const AuthRoute = ({ children }: Props) => {
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    setIsAuthLoading(true);
-    const authenticated: boolean = isLogin();
-    setIsAuth(authenticated);
-    if (!authenticated) {
-      navigate('/login');
-    }
-    setIsAuthLoading(false);
+    const checkLoginStatus = async () => {
+      setIsAuthLoading(true);
+      const authenticated = await isLogin();
+      setIsAuth(authenticated);
+      if (!authenticated) {
+        navigate('/login');
+      }
+      setIsAuthLoading(false);
+    };
+    checkLoginStatus();
   }, [isLogin, navigate]);
+
 
   return (
     <>
