@@ -13,18 +13,13 @@ const AuthRoute = ({ children }: Props) => {
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    (async () => {
       setIsAuthLoading(true);
       const authenticated = await isLogin();
       setIsAuth(authenticated);
-      if (!authenticated) {
-        navigate('/login');
-      }
       setIsAuthLoading(false);
-    };
-
-    checkLoginStatus();
-  }, [isLogin, navigate]);
+    })();
+  }, [isLogin]);
 
 
   return (
@@ -33,7 +28,7 @@ const AuthRoute = ({ children }: Props) => {
         isAuth ? (
           children
         ) : (
-          <div>Unauthorized Access</div>
+          
         )
       ) : (
         <div>Loading...</div>
