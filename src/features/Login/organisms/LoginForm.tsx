@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from "../../../services/hooks/useAuth";
+import { useAuth } from "../../../services/hooks/auth/useAuth";
 
 import "tailwindcss/tailwind.css";
 

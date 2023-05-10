@@ -20,7 +20,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/about" element={<About />} />
 
         {/* scrum */}
-        <Route path='/sprint-list' element={<AuthRoute><SprintList /></AuthRoute>}/>
+        <Route path='/scrum/sprint-list' element={<AuthRoute><SprintList /></AuthRoute>}/>
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />

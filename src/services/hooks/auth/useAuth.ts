@@ -2,9 +2,9 @@ import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-import { authApi } from '../api/auth/authApi';
-import { Token } from '../../types/auth/token';
-import { User } from '../../types/user/user';
+import { authApi } from '../../api/auth/authApi';
+import { Token } from '../../../types/auth/token';
+import { User } from '../../../types/user/user';
 
 type Auth = {
   loading: boolean;
