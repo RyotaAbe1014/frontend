@@ -11,9 +11,13 @@ const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+
         <Route path="/" element={<AuthRoute><Home /></AuthRoute>} />
         <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
+
+        {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
