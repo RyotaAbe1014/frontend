@@ -52,12 +52,12 @@ export const SprintList: React.FC = () => {
                             </td>
                             <td className="py-3 px-6 text-left">
                               <div className="flex items-center">
-                                <span>{sprint.createdAt}</span>
+                                <span>{sprint.createdAt.split('T')[0]}</span>
                               </div>
                             </td>
                             <td className="py-3 px-6 text-left">
                               <div className="flex items-center">
-                                <span>{sprint.updatedAt}</span>
+                                <span>{sprint.updatedAt.split('T')[0]}</span>
                               </div>
                             </td>
                             <td className="py-3 px-6 text-left">
