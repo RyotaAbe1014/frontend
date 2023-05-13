@@ -21,6 +21,9 @@ export const useAuth = (): Auth => {
 
   // ログイン処理
   const login = useCallback(async (email: string, password: string) => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('refresh');
+    sessionStorage.removeItem('access');
     try {
       setLoading(true);
       setErrorMessage(undefined);
@@ -62,7 +65,6 @@ export const useAuth = (): Auth => {
     const access = sessionStorage.getItem('access');
     const refresh = localStorage.getItem('refresh');
     if (access && refresh) {
-      console.log(access);
       const decoded: any = jwt_decode(access);
       const now = new Date().getTime() / 1000;
       if (now > decoded.exp) {
@@ -70,7 +72,6 @@ export const useAuth = (): Auth => {
         try {
           const res = await authApi.refresh(refresh);
           sessionStorage.setItem('access', res);
-          console.log("アクセストークンを生成した");
           return true;
         } catch (error) {
           console.log(error);
