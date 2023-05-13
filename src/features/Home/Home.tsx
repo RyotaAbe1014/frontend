@@ -6,7 +6,7 @@ export const Home: React.FC = () => {
   return (
     <>
       <DefaultLayout>
-        <h1>hello</h1>
+        <div>hello</div>
       </DefaultLayout>
     </>
   );
