@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <header className="bg-white py-4 shadow">
       <div className="flex items-center justify-between">

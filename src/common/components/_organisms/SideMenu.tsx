@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SideMenu = () => {
+const SideMenu: React.FC = () => {
   return (
     <aside className="h-screen w-2/12 bg-white p-6 shadow">
       <div className="menu">
