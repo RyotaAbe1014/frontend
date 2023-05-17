@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+interface LinkType {
+  label: string;
+  to: string;
+}
+
 const SideMenu: React.FC = () => {
-  const links = [
+  const links: LinkType[] = [
     {
       label: 'プロダクトバックログ',
       to: '/productbacklog',
