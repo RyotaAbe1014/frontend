@@ -18,9 +18,11 @@ export const SprintEditModal: React.FC<Props> = (props) => {
 
   const { createSprint } = useSprint();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (isCreate) {
       createSprint(sprintName, startDate, endDate);
+      setIsOpen(false);
     }
   }
 
@@ -34,7 +36,7 @@ export const SprintEditModal: React.FC<Props> = (props) => {
           </button>
         </div>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="sprint-name" className="block text-sm font-medium leading-6 text-gray-900">
               スプリント名
@@ -87,7 +89,6 @@ export const SprintEditModal: React.FC<Props> = (props) => {
             <button
               type="submit"
               className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500"
-              onClick={() => handleSubmit()}
             >
               {isCreate ? '作成' : '更新'}
             </button>

@@ -6,7 +6,7 @@ import { Sprint } from "../../../../types/scurm/sprint";
 interface sprintAPI {
     getSprint: (id: string) => Promise<void>;
     getSprints: () => Promise<Sprint[]>;
-    createSprint: (data: any) => Promise<void>;
+    createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
 }
 
 export const sprintAPI: sprintAPI = {
@@ -30,14 +30,20 @@ export const sprintAPI: sprintAPI = {
                 throw new Error(error.message);
             });
     },
-    createSprint: async (data: any) => {
-        return await baseAPI.post(`/sprint/`, data)
-            .then((response: AxiosResponse) => {
-                return response.data;
-            })
-            .catch((error: AxiosError) => {
-                console.log(error);
-                throw new Error(error.message);
-            });
+    createSprint: async (sprintName: string, startDate: string, endDate: string) => {
+        return await baseAPI.post(`/scrum/sprint/create/`,
+            {
+                name: sprintName,
+                startDate: startDate,
+                endDate: endDate
+            }
+        )
+        .then((response: AxiosResponse) => {
+            return response.data;
+        })
+        .catch((error: AxiosError) => {
+            console.log(error);
+            throw new Error(error.message);
+        });
     }
 } 

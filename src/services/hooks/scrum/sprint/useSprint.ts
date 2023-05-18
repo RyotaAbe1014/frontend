@@ -50,13 +50,14 @@ export const useSprint = (): useSprint => {
   }, []);
 
   // スプリント作成処理
-  const createSprint = useCallback(async (data: any) => {
+  const createSprint = useCallback(async (sprintName: string, startDate: string, endDate: string) => {
     try {
       setLoading(true);
-      setErrorMessage(undefined);
-      const response = await sprintAPI.createSprint(data);
+      setErrorMessage(undefined);      
+      await sprintAPI.createSprint(sprintName, startDate, endDate);
+      // スプリント一覧を再取得
+      await getSprints();
       setLoading(false);
-      return response;
     }
     catch (error: any) {
       setLoading(false);

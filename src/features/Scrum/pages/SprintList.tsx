@@ -14,7 +14,7 @@ export const SprintList: React.FC = () => {
 
   useEffect(() => {
     getSprints();
-  }, []);
+  }, [sprints]);
 
   return (
     <>
