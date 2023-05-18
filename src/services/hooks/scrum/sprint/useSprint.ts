@@ -8,7 +8,7 @@ type useSprint = {
   sprints: SprintType[] | undefined;
   getSprint: (id: string) => Promise<void>;
   getSprints: () => Promise<void>;
-  createSprint: (data: any) => Promise<void>;
+  createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
 }
 
 export const useSprint = (): useSprint => {
