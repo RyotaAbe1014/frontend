@@ -37,7 +37,7 @@ export const useSprint = (): useSprint => {
     try {
       setLoading(true);
       setErrorMessage(undefined);
-      const response = await sprintAPI.getSprints();
+      const response: SprintType[] = await sprintAPI.getSprints();
       if (response) {
         setSprints(response);
       }
