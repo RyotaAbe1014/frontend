@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useSprint } from '../../../services/hooks/scrum/sprint/useSprint'
 import { Sprint } from '../../../types/scurm/sprint';
 import { DefaultLayout } from '../../../common/components/_templates/DefaultLayout';
-import { BaseModal } from '../../../common/components/_organisms/BaseModal';
-import { FaTimes } from 'react-icons/fa';
 import { SprintEditModal } from '../_organisms/SprintEditModal';
 
 
