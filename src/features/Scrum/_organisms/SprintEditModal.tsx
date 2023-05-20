@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { BaseModal } from '../../../common/components/_organisms/BaseModal';
+import { BaseModal } from '../../../common/_components/_organisms/BaseModal';
 import { FaTimes } from 'react-icons/fa';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
 

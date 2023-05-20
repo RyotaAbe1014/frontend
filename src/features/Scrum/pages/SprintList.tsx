@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { DefaultLayout } from '../../../common/components/_templates/DefaultLayout';
+import { DefaultLayout } from '../../../common/_components/_templates/DefaultLayout';
 import { SprintEditModal } from '../_organisms/SprintEditModal';
 import { SprintListTable } from '../_organisms/SprintListTable';
 import { SprintProvider } from '../../../services/providers/scrum/SprintProvider';

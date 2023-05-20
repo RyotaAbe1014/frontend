@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
 
-import { BaseModal } from '../../../common/components/_organisms/BaseModal';
+import { BaseModal } from '../../../common/_components/_organisms/BaseModal';
 
 interface Props {
   isOpen: boolean;
