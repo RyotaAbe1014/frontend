@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { BaseModal } from '../../../common/components/_organisms/BaseModal';
-import { useSprint } from '../../../services/hooks/scrum/sprint/useSprint';
-
 import { FaTimes } from 'react-icons/fa';
+import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
 
 interface Props {
   isOpen: boolean;
@@ -15,8 +14,7 @@ export const SprintEditModal: React.FC<Props> = (props) => {
   const [sprintName, setSprintName] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-
-  const { createSprint } = useSprint();
+  const { createSprint } = useContext(SprintContext);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
