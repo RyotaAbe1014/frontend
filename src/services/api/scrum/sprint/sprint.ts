@@ -1,4 +1,4 @@
-import { baseAPI } from "../../common/baseApi";
+import { requireTokenApi } from "../../common/requireTokenApi";
 import { AxiosError, AxiosResponse } from "axios";
 
 import { Sprint } from "../../../../types/scurm/sprint";
@@ -11,7 +11,7 @@ interface sprintAPI {
 
 export const sprintAPI: sprintAPI = {
     getSprint: async (id: string) => {
-        return await baseAPI.get(`/sprint/${id}`)
+        return await requireTokenApi.get(`/sprint/${id}`)
             .then((response: AxiosResponse) => {
                 return response.data;
             })
@@ -21,7 +21,7 @@ export const sprintAPI: sprintAPI = {
             });
     },
     getSprints: async () => {
-        return await baseAPI.get(`/scrum/sprints/`)
+        return await requireTokenApi.get(`/scrum/sprints/`)
             .then((response: AxiosResponse) => {
                 return response.data as Sprint[];
             })
@@ -31,7 +31,7 @@ export const sprintAPI: sprintAPI = {
             });
     },
     createSprint: async (sprintName: string, startDate: string, endDate: string) => {
-        return await baseAPI.post(`/scrum/sprint/create/`,
+        return await requireTokenApi.post(`/scrum/sprint/create/`,
             {
                 name: sprintName,
                 startDate: startDate,

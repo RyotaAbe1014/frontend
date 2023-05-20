@@ -84,8 +84,6 @@ export const useAuth = (): Auth => {
     console.log(access)
     return false;
   }, []);
-  
-
 
   return { loading, errorMessage, login, logout, isLogin };
 }
