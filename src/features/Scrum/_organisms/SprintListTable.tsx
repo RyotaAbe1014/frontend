@@ -8,16 +8,24 @@ import { SprintDeleteModal } from './SprintDeleteModal';
 
 export const SprintListTable: React.FC = () => {
   const { data, getSprints } = useContext(SprintContext);
-  const [showDeleteModal, setshowDeleteModal] = useState<boolean>(false)
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [sprintId, setSprintId] = useState<string>('');
+  const [sprintName, setSprintName] = useState<string | undefined>('');
 
   useEffect(() => {
     getSprints();
   }, []);
 
+  const handleDelete = (sprintId: string, sprintName: string | undefined) => {
+    setSprintId(sprintId);
+    setSprintName(sprintName);
+    setShowDeleteModal(true);
+  }
+
   return (
     <>
-    {/* 削除モーダル */}
-    <SprintDeleteModal isOpen={showDeleteModal} setIsOpen={setshowDeleteModal} />
+      {/* 削除モーダル */}
+      <SprintDeleteModal isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} sprintId={sprintId} sprintName={sprintName} />
 
       <div className=" bg-gray-100 flex bg-gray-100 font-sans overflow-auto h-screen">
         <div className="w-full">
@@ -37,8 +45,8 @@ export const SprintListTable: React.FC = () => {
               <tbody className="text-gray-600 text-sm font-light">
                 {data && data.length > 0 ? (
                   <>
-                    {data.map((sprint: Sprint) => (
-                      <tr key={sprint.sprintId} className="border-b border-gray-200 hover:bg-gray-100">
+                    {data.map((sprint: Sprint, index) => (
+                      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                         <td className="py-3 px-6 text-left whitespace-nowrap">
                           <div className="flex text-left">
                             <span className="font-medium">{sprint.name}</span>
@@ -74,7 +82,7 @@ export const SprintListTable: React.FC = () => {
                             <button>
                               <FaEdit className="text-blue-400 hover:text-blue-600 cursor-pointer" size={20} />
                             </button>
-                            <button onClick={() => setshowDeleteModal(true)}>
+                            <button onClick={() => handleDelete(sprint.sprintId, sprint.name)}>
                               <FaTrashAlt className="text-red-400 hover:text-red-600 cursor-pointer" size={20} />
                             </button>
                           </div>

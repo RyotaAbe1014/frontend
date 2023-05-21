@@ -1,9 +1,9 @@
 export interface Sprint {
   sprintId: string;
-  name: string | null;
+  name: string | undefined;
   startDate: string;
   endDate: string;
   createdAt: string;
   updatedAt: string;
-  updatedBy: string | null;
+  updatedBy: string | undefined;
 }

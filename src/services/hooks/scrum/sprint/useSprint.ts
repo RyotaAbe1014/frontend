@@ -6,9 +6,9 @@ type useSprint = {
   loading: boolean;
   errorMessage: string | undefined;
   data: SprintType[] | undefined;
-  getSprint: (id: string) => Promise<void>;
   getSprints: () => Promise<void>;
   createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
+  deleteSprint: (id: string) => Promise<void>;
 }
 
 export const useSprint = (): useSprint => {
@@ -32,20 +32,6 @@ export const useSprint = (): useSprint => {
     }
   }, []);
 
-  // スプリント取得処理
-  const getSprint = useCallback(async (id: string) => {
-    try {
-      setLoading(true);
-      setErrorMessage(undefined);
-      const response = await sprintAPI.getSprint(id);
-      return response;
-    } catch (error: any) {
-      setErrorMessage(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
 // スプリント作成処理
 const createSprint = useCallback(async (sprintName: string, startDate: string, endDate: string) => {
   try {
@@ -60,5 +46,19 @@ const createSprint = useCallback(async (sprintName: string, startDate: string, e
   }
 }, [getSprints]);
 
-  return { loading, errorMessage, getSprint, getSprints, createSprint, data };
+// スプリント削除処理
+const deleteSprint = useCallback(async (id: string) => {
+  try {
+    setLoading(true);
+    setErrorMessage(undefined);
+    await sprintAPI.deleteSprint(id);
+    await getSprints(); // スプリント一覧を再取得
+  } catch (error: any) {
+    setErrorMessage(error.message);
+  } finally {
+    setLoading(false);
+  }
+}, [getSprints]);
+
+  return { loading, errorMessage, getSprints, createSprint, data, deleteSprint };
 };

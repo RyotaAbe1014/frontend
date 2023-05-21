@@ -4,22 +4,12 @@ import { AxiosError, AxiosResponse } from "axios";
 import { Sprint } from "../../../../types/scurm/sprint";
 
 interface sprintAPI {
-    getSprint: (id: string) => Promise<void>;
     getSprints: () => Promise<Sprint[]>;
     createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
+    deleteSprint: (id: string) => Promise<void>;
 }
 
 export const sprintAPI: sprintAPI = {
-    getSprint: async (id: string) => {
-        return await requireTokenApi.get(`/sprint/${id}`)
-            .then((response: AxiosResponse) => {
-                return response.data;
-            })
-            .catch((error: AxiosError) => {
-                console.log(error);
-                throw new Error(error.message);
-            });
-    },
     getSprints: async () => {
         return await requireTokenApi.get(`/scrum/sprints/`)
             .then((response: AxiosResponse) => {
@@ -38,12 +28,22 @@ export const sprintAPI: sprintAPI = {
                 endDate: endDate
             }
         )
-        .then((response: AxiosResponse) => {
-            return response.data;
-        })
-        .catch((error: AxiosError) => {
-            console.log(error);
-            throw new Error(error.message);
-        });
+            .then((response: AxiosResponse) => {
+                return response.data;
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
+                throw new Error(error.message);
+            });
+    },
+    deleteSprint: async (id: string) => {
+        return await requireTokenApi.delete(`/scrum/sprint/delete/${id}/`)
+            .then((response: AxiosResponse) => {
+                return response.data;
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
+                throw new Error(error.message);
+            });
     }
 } 
