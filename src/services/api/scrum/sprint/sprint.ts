@@ -7,6 +7,7 @@ interface sprintAPI {
     getSprints: () => Promise<Sprint[]>;
     createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
     deleteSprint: (id: string) => Promise<void>;
+    updateSprint: (id: string, sprintName: string, startDate: string, endDate: string) => Promise<void>;
 }
 
 export const sprintAPI: sprintAPI = {
@@ -38,6 +39,22 @@ export const sprintAPI: sprintAPI = {
     },
     deleteSprint: async (id: string) => {
         return await requireTokenApi.delete(`/scrum/sprint/delete/${id}/`)
+            .then((response: AxiosResponse) => {
+                return response.data;
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
+                throw new Error(error.message);
+            });
+    },
+    updateSprint : async (id: string, sprintName: string, startDate: string, endDate: string) => {
+        return await requireTokenApi.put(`/scrum/sprint/update/${id}/`,
+            {
+                name: sprintName,
+                startDate: startDate,
+                endDate: endDate
+            }
+        )
             .then((response: AxiosResponse) => {
                 return response.data;
             })

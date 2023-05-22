@@ -8,6 +8,7 @@ type SprintContextType = {
   getSprints: () => Promise<void>;
   createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
   deleteSprint: (id: string) => Promise<void>;
+  updateSprint: (id: string, sprintName: string, startDate: string, endDate: string) => Promise<void>;
 };
 
 // Providing default values is important here
@@ -18,4 +19,5 @@ export const SprintContext = React.createContext<SprintContextType>({
   getSprints: async () => {},
   createSprint: async () => {},
   deleteSprint: async () => {},
+  updateSprint: async () => {},
 });

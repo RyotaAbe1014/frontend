@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { BaseModal } from '../../../common/_components/_organisms/BaseModal';
 import { FaTimes } from 'react-icons/fa';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
@@ -7,6 +7,10 @@ interface Props {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isCreate: boolean;
+  sprintId?: string;
+  sprintName?: string;
+  sprintStartDate?: string;
+  sprintEndDate?: string;
 }
 
 export const SprintEditModal: React.FC<Props> = (props) => {
@@ -14,12 +18,23 @@ export const SprintEditModal: React.FC<Props> = (props) => {
   const [sprintName, setSprintName] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-  const { createSprint } = useContext(SprintContext);
+  const { createSprint, updateSprint } = useContext(SprintContext);
+
+  useEffect(() => {
+    if (!isCreate) {
+      setSprintName(props.sprintName!);
+      setStartDate(props.sprintStartDate!);
+      setEndDate(props.sprintEndDate!);
+    }
+  }, [props.sprintName, props.sprintStartDate, props.sprintEndDate]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isCreate) {
       createSprint(sprintName, startDate, endDate);
+      setIsOpen(false);
+    } else {
+      updateSprint(props.sprintId!, sprintName, startDate, endDate);
       setIsOpen(false);
     }
   }
@@ -45,6 +60,7 @@ export const SprintEditModal: React.FC<Props> = (props) => {
                 name="sprint-name"
                 type="text"
                 autoComplete="sprint-name"
+                value={sprintName}
                 required
                 onChange={(e) => setSprintName(e.target.value)}
                 className="block w-full px-3 py-1.5 rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -61,6 +77,7 @@ export const SprintEditModal: React.FC<Props> = (props) => {
                 name="start-date"
                 type="date"
                 autoComplete="start-date"
+                value={startDate}
                 required
                 className="block w-full px-3 py-1.5 rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 onChange={(e) => setStartDate(e.target.value)}
@@ -77,6 +94,7 @@ export const SprintEditModal: React.FC<Props> = (props) => {
                 name="end-date"
                 type="date"
                 autoComplete="end-date"
+                value={endDate}
                 required
                 className="block w-full px-3 py-1.5 rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 onChange={(e) => setEndDate(e.target.value)}
