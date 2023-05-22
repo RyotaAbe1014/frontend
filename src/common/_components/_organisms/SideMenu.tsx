@@ -10,7 +10,7 @@ const SideMenu: React.FC = () => {
   const links: LinkType[] = [
     {
       label: 'プロダクトバックログ',
-      to: '/prodact-backlog-list',
+      to: '/product-backlog-list',
     },
     {
       label: 'スプリント',
