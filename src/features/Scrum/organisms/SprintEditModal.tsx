@@ -35,6 +35,9 @@ export const SprintEditModal: React.FC<Props> = (props) => {
       setIsOpen(false);
     } else {
       updateSprint(props.sprintId!, sprintName, startDate, endDate);
+      setSprintName('');
+      setStartDate('');
+      setEndDate('');
       setIsOpen(false);
     }
   }
