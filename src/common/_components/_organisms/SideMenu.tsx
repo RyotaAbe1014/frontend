@@ -22,7 +22,7 @@ const SideMenu: React.FC = () => {
     },
     {
       label: 'ユーザ管理',
-      to: '/user',
+      to: '/users',
     },
   ];
 

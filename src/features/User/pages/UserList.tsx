@@ -1,7 +1,12 @@
 import React from 'react'
+import { DefaultLayout } from '../../../common/_components/_templates/DefaultLayout'
 
 export const UserList = () => {
   return (
-    <div>UserList</div>
+    <>
+      <DefaultLayout >
+        <div>UserList</div>
+      </DefaultLayout>
+    </>
   )
 }
