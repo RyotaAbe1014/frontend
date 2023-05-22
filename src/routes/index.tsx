@@ -6,6 +6,7 @@ import { Home } from '../features/Home/Home';
 import { NotFound } from '../features/NotFound/NotFound';
 import { Login } from '../features/Login/pages/Login';
 import { SprintList } from '../features/Scrum/pages/SprintList';
+import { UserList } from '../features/User/pages/UserList';
 
 
 const AppRoutes: React.FC = () => {
@@ -18,8 +19,8 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<AuthRoute><Home /></AuthRoute>} />
         {/* scrum */}
         <Route path='/sprint-list' element={<AuthRoute><SprintList /></AuthRoute>}/>
-
-
+        {/* user */}
+        <Route path="/users" element={<AuthRoute><UserList /></AuthRoute>} />
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
