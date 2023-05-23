@@ -18,23 +18,17 @@ export const ProductBacklogListTable: React.FC = () => {
   // const [sprintEndDate, setSprintEndDate] = useState<string>('');
 
 
-  // useEffect(() => {
-  //   getSprints();
-  // }, []);
+  useEffect(() => {
+    // TODO: バックログアイテムを取得する
+  }, []);
 
-  // const handleDelete = (sprintId: string, sprintName: string | undefined) => {
-  //   setSprintId(sprintId);
-  //   setSprintName(sprintName);
-  //   setShowDeleteModal(true);
-  // }
+  const handleDelete = () => {
+    // TODO: 削除モーダルを表示する
+  }
 
-  // const handleEdit = (sprintId: string, sprintName: string | undefined, sprintStartDate: string, sprintEndDate: string) => {
-  //   setSprintId(sprintId);
-  //   setSprintName(sprintName);
-  //   setSprintStartDate(sprintStartDate);
-  //   setSprintEndDate(sprintEndDate);
-  //   setShowEditModal(true);
-  // }
+  const handleEdit = () => {
+    // TODO: 更新モーダルを表示する
+  }
 
   return (
     <>
@@ -50,6 +44,7 @@ export const ProductBacklogListTable: React.FC = () => {
               <thead className="sticky top-0 bg-gray-200">
                 <tr className="text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-6 text-left">バックログ名</th>
+                  <th className="py-3 px-6 text-left">作業スプリント</th>
                   <th className="py-3 px-6 text-left">ステータス</th>
                   <th className="py-3 px-6 text-left">進捗率</th>
                   <th className="py-3 px-6 text-left">作成日</th>
@@ -95,12 +90,12 @@ export const ProductBacklogListTable: React.FC = () => {
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center space-x-4">
-                            {/* <button onClick={() => handleEdit(sprint.sprintId, sprint.name, sprint.startDate, sprint.endDate)}>
+                            <button onClick={() => handleEdit()}>
                               <FaEdit className="text-blue-400 hover:text-blue-600 cursor-pointer" size={20} />
                             </button>
-                            <button onClick={() => handleDelete(sprint.sprintId, sprint.name)}>
+                            <button onClick={() => handleDelete()}>
                               <FaTrashAlt className="text-red-400 hover:text-red-600 cursor-pointer" size={20} />
-                            </button> */}
+                            </button>
                           </div>
                         </td>
                       </tr>
