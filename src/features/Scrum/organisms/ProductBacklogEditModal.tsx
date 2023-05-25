@@ -13,7 +13,7 @@ interface Props {
 
 export function ProductBacklogEditModal(props: Props): JSX.Element {
   const { isOpen, setIsOpen, isCreate } = props;
-  const { sprintData, getSprints } = useContext(SprintContext);
+  const { sprintData, getSprintList } = useContext(SprintContext);
   const { createProductBacklog } = useContext(PuroductBacklogContext);
 
   // formState
@@ -24,10 +24,10 @@ export function ProductBacklogEditModal(props: Props): JSX.Element {
 
   useEffect(() => {
     const fetchSprints = async () => {
-      await getSprints();
+      await getSprintList();
     };
     fetchSprints();
-  }, [getSprints]);
+  }, [getSprintList]);
 
   const handleCorrespondingSprintChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setCorrespondingSprint(e.target.value);

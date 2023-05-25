@@ -8,7 +8,7 @@ import { SprintEditModal } from './SprintEditModal';
 
 
 export const ProductBacklogListTable: React.FC = () => {
-  const { sprintData, getSprints } = useContext(SprintContext);
+  const { sprintData, getSprintList } = useContext(SprintContext);
   // const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   // const [showEditModal, setShowEditModal] = useState<boolean>(false);
 

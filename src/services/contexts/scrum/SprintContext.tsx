@@ -5,7 +5,7 @@ type SprintContextType = {
   loading: boolean;
   errorMessage: string | undefined;
   sprintData: SprintType[] | undefined;
-  getSprints: () => Promise<void>;
+  getSprintList: () => Promise<void>;
   createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
   deleteSprint: (id: string) => Promise<void>;
   updateSprint: (id: string, sprintName: string, startDate: string, endDate: string) => Promise<void>;
@@ -15,7 +15,7 @@ export const SprintContext = React.createContext<SprintContextType>({
   loading: false,
   errorMessage: undefined,
   sprintData: undefined,
-  getSprints: async () => {},
+  getSprintList: async () => {},
   createSprint: async () => {},
   deleteSprint: async () => {},
   updateSprint: async () => {},

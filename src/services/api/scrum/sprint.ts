@@ -4,15 +4,15 @@ import { AxiosError, AxiosResponse } from "axios";
 import { Sprint } from "../../../types/scurm/sprint";
 
 interface sprintAPI {
-    getSprints: () => Promise<Sprint[]>;
+    getSprintList: () => Promise<Sprint[]>;
     createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
     deleteSprint: (id: string) => Promise<void>;
     updateSprint: (id: string, sprintName: string, startDate: string, endDate: string) => Promise<void>;
 }
 
 export const sprintAPI: sprintAPI = {
-    getSprints: async () => {
-        return await requireTokenApi.get(`/scrum/sprints/`)
+    getSprintList: async () => {
+        return await requireTokenApi.get(`/scrum/sprint_list/`)
             .then((response: AxiosResponse) => {
                 return response.data as Sprint[];
             })
