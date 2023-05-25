@@ -1,7 +1,7 @@
-import { requireTokenApi } from "../../common/requireTokenApi";
+import { requireTokenApi } from "../common/requireTokenApi";
 import { AxiosError, AxiosResponse } from "axios";
 
-import { Sprint } from "../../../../types/scurm/sprint";
+import { Sprint } from "../../../types/scurm/sprint";
 
 interface sprintAPI {
     getSprints: () => Promise<Sprint[]>;

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { sprintAPI } from '../../../api/scrum/sprint/sprint';
-import { Sprint as SprintType } from '../../../../types/scurm/sprint';
+import { sprintAPI } from '../../api/scrum/sprint';
+import { Sprint as SprintType } from '../../../types/scurm/sprint';
 
 type useSprint = {
   loading: boolean;
   errorMessage: string | undefined;
-  data: SprintType[] | undefined;
+  sprintData: SprintType[] | undefined;
   getSprints: () => Promise<void>;
   createSprint: (sprintName: string, startDate: string, endDate: string) => Promise<void>;
   deleteSprint: (id: string) => Promise<void>;
@@ -15,7 +15,7 @@ type useSprint = {
 export const useSprint = (): useSprint => {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-  const [data, setData] = useState<SprintType[] | undefined>(undefined);
+  const [sprintData, setSprintData] = useState<SprintType[] | undefined>(undefined);
 
   // スプリント一覧取得処理
   const getSprints = useCallback(async () => {
@@ -24,7 +24,7 @@ export const useSprint = (): useSprint => {
       setErrorMessage(undefined);
       const response: SprintType[] = await sprintAPI.getSprints();
       if (response) {
-        setData(response);
+        setSprintData(response);
       }
     } catch (error: any) {
       setErrorMessage(error.message);
@@ -75,5 +75,5 @@ export const useSprint = (): useSprint => {
     }
   }, [getSprints]);
 
-  return { loading, errorMessage, getSprints, createSprint, data, deleteSprint, updateSprint };
+  return { loading, errorMessage, getSprints, createSprint, sprintData, deleteSprint, updateSprint };
 };

@@ -8,7 +8,7 @@ import { SprintEditModal } from './SprintEditModal';
 
 
 export const SprintListTable: React.FC = () => {
-  const { data, getSprints } = useContext(SprintContext);
+  const { sprintData, getSprints } = useContext(SprintContext);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
@@ -58,9 +58,9 @@ export const SprintListTable: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {data && data.length > 0 ? (
+                {sprintData && sprintData.length > 0 ? (
                   <>
-                    {data.map((sprint: Sprint, index) => (
+                    {sprintData.map((sprint: Sprint, index) => (
                       <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                         <td className="py-3 px-6 text-left whitespace-nowrap">
                           <div className="flex text-left">
