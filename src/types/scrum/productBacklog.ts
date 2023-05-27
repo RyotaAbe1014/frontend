@@ -3,10 +3,12 @@ import { Sprint } from "./sprint";
 
 export interface ProductBacklog {
   productBacklogId: string;
-  name: string;
+  title: string;
   description?: string;
+  progress: number;
+  status: number;
   sprint?: Sprint;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   updatedBy: string;
 }

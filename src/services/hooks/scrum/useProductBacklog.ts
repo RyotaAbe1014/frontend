@@ -15,34 +15,36 @@ export const useProductBacklog = (): useProductBacklog => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const [productBacklogData, setProductBacklogData] = useState<ProductBacklogType[] | undefined>(undefined);
 
+    // バックログアイテム一覧取得処理
+    const getProductBacklogList = useCallback(async () => {
+      try {
+        setLoading(true);
+        setErrorMessage(undefined);
+        const response: ProductBacklogType[] = await productBacklogAPI.getProductBacklogList();
+        if (response) {
+          setProductBacklogData(response);
+        }
+      } catch (error: any) {
+        setErrorMessage(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }, []);
+    
   // バックログアイテム作成処理
   const createProductBacklog = useCallback(async (title: string, description: string, sprintId: string | undefined) => {
     try {
       setLoading(true);
       setErrorMessage(undefined);
       await productBacklogAPI.createProductBacklog(title, description, sprintId);
-      // await getSprints(); // スプリント一覧を再取得
+      await getProductBacklogList();
     } catch (error: any) {
       setErrorMessage(error.message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [getProductBacklogList]);
 
-  // バックログアイテム一覧取得処理
-  const getProductBacklogList = useCallback(async () => {
-    try {
-      setLoading(true);
-      setErrorMessage(undefined);
-      const response: ProductBacklogType[] = await productBacklogAPI.getProductBacklogList();
-      if (response) {
-        setProductBacklogData(response);
-      }
-    } catch (error: any) {
-      setErrorMessage(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+
   return { loading, errorMessage, createProductBacklog, productBacklogData, getProductBacklogList };
 };

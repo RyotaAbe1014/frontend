@@ -1,17 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
-
-import { Sprint } from '../../../types/scrum/sprint';
-import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
+import { ProductBacklog } from '../../../types/scrum/productBacklog';
+import { ProductBacklogProgress } from '../../../types/scrum/productBacklogProgress';
+import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductBacklogContext';
 
 export const ProductBacklogListTable: React.FC = () => {
-  const { sprintData, getSprintList } = useContext(SprintContext);
-
-  // const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  // const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const { productBacklogData, getProductBacklogList } = useContext(ProductBacklogContext);
 
   useEffect(() => {
-    // TODO: バックログアイテムを取得する
+    getProductBacklogList();
   }, []);
 
   const handleDelete = () => {
@@ -38,7 +35,6 @@ export const ProductBacklogListTable: React.FC = () => {
                   <th className="py-3 px-6 text-left">バックログ名</th>
                   <th className="py-3 px-6 text-left">作業スプリント</th>
                   <th className="py-3 px-6 text-left">ステータス</th>
-                  <th className="py-3 px-6 text-left">進捗率</th>
                   <th className="py-3 px-6 text-left">作成日</th>
                   <th className="py-3 px-6 text-left">更新日</th>
                   <th className="py-3 px-6 text-left">最終更新者</th>
@@ -46,38 +42,51 @@ export const ProductBacklogListTable: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {sprintData && sprintData.length > 0 ? (
+                {productBacklogData && productBacklogData.length > 0 ? (
                   <>
-                    {sprintData.map((sprint: Sprint, index) => (
+                    {productBacklogData.map((productBacklog: ProductBacklog, index) => (
                       <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                         <td className="py-3 px-6 text-left whitespace-nowrap">
                           <div className="flex text-left">
-                            <span className="font-medium">{sprint.name}</span>
+                            <span className="font-medium">{productBacklog.title}</span>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center">
-                            <span>{sprint.startDate}</span>
+                            <span>{productBacklog.sprint?.name}</span>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center">
-                            <span>{sprint.endDate}</span>
+                            {productBacklog.progress === ProductBacklogProgress.NOT_STARTED ? (
+                              <span className="inline-block bg-blue-200 text-blue-800 px-4 py-2 rounded-full">not started</span>
+                            ) : productBacklog.progress === ProductBacklogProgress.STARTED ? (
+                              <span className="inline-block bg-green-200 text-green-800 px-4 py-2 rounded-full">started</span>
+                            ) : productBacklog.progress === ProductBacklogProgress.HALF_WAY ? (
+                              <span className="inline-block bg-yellow-200 text-yellow-800 px-4 py-2 rounded-full">under review</span>
+                            ) : productBacklog.progress === ProductBacklogProgress.ALMOST_DONE ? (
+                              <span className="inline-block bg-orange-200 text-orange-800 px-4 py-2 rounded-full">almost done</span>
+                            ) : productBacklog.progress === ProductBacklogProgress.COMPLETED ? (
+                              <span className="inline-block bg-purple-200 text-purple-800 px-4 py-2 rounded-full">completed</span>
+                            ) : (
+                              <span className="inline-block bg-red-200 text-red-800 px-4 py-2 rounded-full">archived</span>
+                            )
+                            }
                           </div>
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center">
-                            <span>{sprint.createdAt.split('T')[0]}</span>
+                            <span>{productBacklog.createdAt.split('T')[0]}</span>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center">
-                            <span>{sprint.updatedAt.split('T')[0]}</span>
+                            <span>{productBacklog.updatedAt.split('T')[0]}</span>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center">
-                            <span>{sprint.updatedBy}</span>
+                            <span>{productBacklog.updatedBy}</span>
                           </div>
                         </td>
                         <td className="py-3 px-6 text-left">
