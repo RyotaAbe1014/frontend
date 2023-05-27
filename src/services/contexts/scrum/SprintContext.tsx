@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sprint as SprintType } from '../../../types/scurm/sprint';
+import { Sprint as SprintType } from '../../../types/scrum/sprint';
 
 type SprintContextType = {
   loading: boolean;

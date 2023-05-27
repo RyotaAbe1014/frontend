@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect, ChangeEvent } from 'react'
 import { BaseModal } from '../../../common/_components/_organisms/BaseModal';
 import { FaTimes } from 'react-icons/fa';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
-import { Sprint } from '../../../types/scurm/sprint';
-import { PuroductBacklogContext } from '../../../services/contexts/scrum/PuroductBacklogContext';
+import { Sprint } from '../../../types/scrum/sprint';
+import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductBacklogContext';
 
 interface Props {
   isOpen: boolean;
@@ -14,7 +14,7 @@ interface Props {
 export function ProductBacklogEditModal(props: Props): JSX.Element {
   const { isOpen, setIsOpen, isCreate } = props;
   const { sprintData, getSprintList } = useContext(SprintContext);
-  const { createProductBacklog } = useContext(PuroductBacklogContext);
+  const { createProductBacklog } = useContext(ProductBacklogContext);
 
   // formState
   const [backLogItemTitle, setBackLogItemTitle] = useState<string>('');

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { sprintAPI } from '../../api/scrum/sprint';
-import { Sprint as SprintType } from '../../../types/scurm/sprint';
+import { Sprint as SprintType } from '../../../types/scrum/sprint';
 
 type useSprint = {
   loading: boolean;

@@ -1,22 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
-import { Sprint } from '../../../types/scurm/sprint';
+import { Sprint } from '../../../types/scrum/sprint';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
-import { SprintDeleteModal } from './SprintDeleteModal';
-import { SprintEditModal } from './SprintEditModal';
-
 
 export const ProductBacklogListTable: React.FC = () => {
   const { sprintData, getSprintList } = useContext(SprintContext);
+
   // const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   // const [showEditModal, setShowEditModal] = useState<boolean>(false);
-
-  // const [sprintId, setSprintId] = useState<string>('');
-  // const [sprintName, setSprintName] = useState<string | undefined>('');
-  // const [sprintStartDate, setSprintStartDate] = useState<string>('');
-  // const [sprintEndDate, setSprintEndDate] = useState<string>('');
-
 
   useEffect(() => {
     // TODO: バックログアイテムを取得する

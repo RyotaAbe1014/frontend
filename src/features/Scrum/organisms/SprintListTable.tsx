@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
-import { Sprint } from '../../../types/scurm/sprint';
+import { Sprint } from '../../../types/scrum/sprint';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
 import { SprintDeleteModal } from './SprintDeleteModal';
 import { SprintEditModal } from './SprintEditModal';

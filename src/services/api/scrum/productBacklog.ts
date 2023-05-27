@@ -1,8 +1,11 @@
 import { requireTokenApi } from "../common/requireTokenApi";
 import { AxiosError, AxiosResponse } from "axios";
 
+import { ProductBacklog } from './../../../types/scrum/productBacklog';
+
 interface productBacklogAPI {
   createProductBacklog: (title: string, description: string, sprintId: string | undefined) => Promise<void>;
+  getProductBacklogList: () => Promise<ProductBacklog[]>;
 }
 
 export const productBacklogAPI: productBacklogAPI = {
@@ -22,4 +25,14 @@ export const productBacklogAPI: productBacklogAPI = {
         throw new Error(error.message);
       });
   },
-} 
+  getProductBacklogList: async () => {
+    return await requireTokenApi.get(`/scrum/product_backlog_list/`)
+      .then((response: AxiosResponse) => {
+        return response.data as ProductBacklog[];
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+  },
+};
