@@ -3,9 +3,13 @@ import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { ProductBacklog } from '../../../types/scrum/productBacklog';
 import { ProductBacklogProgress } from '../../../types/scrum/productBacklogProgress';
 import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductBacklogContext';
+import { ProductBacklogEditModal } from './ProductBacklogEditModal';
 
 export const ProductBacklogListTable: React.FC = () => {
   const { productBacklogData, getProductBacklogList } = useContext(ProductBacklogContext);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [productBacklog, setProductBacklog] = useState<ProductBacklog>();
 
   useEffect(() => {
     getProductBacklogList();
@@ -15,16 +19,18 @@ export const ProductBacklogListTable: React.FC = () => {
     // TODO: 削除モーダルを表示する
   }
 
-  const handleEdit = () => {
+  const handleEdit = (productBacklog: ProductBacklog) => {
     // TODO: 更新モーダルを表示する
+    setProductBacklog(productBacklog);
+    setShowEditModal(true);
   }
 
   return (
     <>
       {/* 削除モーダル */}
       {/* <SprintDeleteModal isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} sprintId={sprintId} sprintName={sprintName}/> */}
-      {/* 更新モーダル */}
-      {/* <SprintEditModal isOpen={showEditModal} setIsOpen={setShowEditModal} isCreate={false} sprintId={sprintId} sprintName={sprintName} sprintStartDate={sprintStartDate} sprintEndDate={sprintEndDate}/> */}
+      {/* 詳細、更新モーダル */}
+      <ProductBacklogEditModal isOpen={showEditModal} setIsOpen={setShowEditModal} productBacklog={productBacklog} isCreate={false}/>
       {/* テーブル */}
       <div className=" bg-gray-100 flex bg-gray-100 font-sans overflow-auto h-screen">
         <div className="w-full">
@@ -45,7 +51,7 @@ export const ProductBacklogListTable: React.FC = () => {
                 {productBacklogData && productBacklogData.length > 0 ? (
                   <>
                     {productBacklogData.map((productBacklog: ProductBacklog, index) => (
-                      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+                      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100 cursor-pointer" onClick={() => handleEdit(productBacklog)}>
                         <td className="py-3 px-6 text-left whitespace-nowrap">
                           <div className="flex text-left">
                             <span className="font-medium">{productBacklog.title}</span>
@@ -63,7 +69,7 @@ export const ProductBacklogListTable: React.FC = () => {
                             ) : productBacklog.progress === ProductBacklogProgress.STARTED ? (
                               <span className="inline-block bg-green-200 text-green-800 px-4 py-2 rounded-full">started</span>
                             ) : productBacklog.progress === ProductBacklogProgress.HALF_WAY ? (
-                              <span className="inline-block bg-yellow-200 text-yellow-800 px-4 py-2 rounded-full">under review</span>
+                              <span className="inline-block bg-yellow-200 text-yellow-800 px-4 py-2 rounded-full">half way</span>
                             ) : productBacklog.progress === ProductBacklogProgress.ALMOST_DONE ? (
                               <span className="inline-block bg-orange-200 text-orange-800 px-4 py-2 rounded-full">almost done</span>
                             ) : productBacklog.progress === ProductBacklogProgress.COMPLETED ? (
@@ -91,9 +97,6 @@ export const ProductBacklogListTable: React.FC = () => {
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center space-x-4">
-                            <button onClick={() => handleEdit()}>
-                              <FaEdit className="text-blue-400 hover:text-blue-600 cursor-pointer" size={20} />
-                            </button>
                             <button onClick={() => handleDelete()}>
                               <FaTrashAlt className="text-red-400 hover:text-red-600 cursor-pointer" size={20} />
                             </button>

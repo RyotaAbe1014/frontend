@@ -2,13 +2,15 @@ import React, { useState, useContext, useEffect, ChangeEvent } from 'react'
 import { BaseModal } from '../../../common/_components/_organisms/BaseModal';
 import { FaTimes } from 'react-icons/fa';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
-import { Sprint } from '../../../types/scrum/sprint';
 import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductBacklogContext';
+import { ProductBacklog } from '../../../types/scrum/productBacklog';
+import { ProductBacklogProgress } from '../../../types/scrum/productBacklogProgress';
 
 interface Props {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isCreate: boolean;
+  productBacklog?: ProductBacklog;
 }
 
 export function ProductBacklogEditModal(props: Props): JSX.Element {
@@ -20,7 +22,7 @@ export function ProductBacklogEditModal(props: Props): JSX.Element {
   const [backLogItemTitle, setBackLogItemTitle] = useState<string>('');
   const [correspondingSprint, setCorrespondingSprint] = useState<string | undefined>(undefined);
   const [backLogItemDescription, setBackLogItemDescription] = useState<string>('');
-
+  const [backLogItemProgress, setBackLogItemProgress] = useState<number>(0);
 
   useEffect(() => {
     const fetchSprints = async () => {
@@ -28,6 +30,17 @@ export function ProductBacklogEditModal(props: Props): JSX.Element {
     };
     fetchSprints();
   }, [getSprintList]);
+
+
+  useEffect(() => {
+    if (props.productBacklog) {
+      setBackLogItemTitle(props.productBacklog.title);
+      setCorrespondingSprint(props.productBacklog.sprint?.sprintId);
+      setBackLogItemDescription(props.productBacklog.description ? props.productBacklog.description : '');
+      setBackLogItemProgress(props.productBacklog.progress);
+    }
+  }, [props.productBacklog]);
+
 
   const handleCorrespondingSprintChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setCorrespondingSprint(e.target.value);
@@ -71,13 +84,12 @@ export function ProductBacklogEditModal(props: Props): JSX.Element {
               />
             </div>
           </div>
-
           <div>
             <label htmlFor="sprint-name" className="block text-sm font-medium leading-6 text-gray-900">
               対応スプリント
             </label>
             <div className="mt-2">
-              <select className="block w-full px-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={(e) => handleCorrespondingSprintChange(e)}>
+              <select className="block w-full px-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500" value={correspondingSprint} onChange={(e) => handleCorrespondingSprintChange(e)}>
                 <option value={undefined}>紐付けなし</option>
                 {sprintData && sprintData.length > 0 && (
                   sprintData.map((sprint, index) => (
@@ -87,6 +99,25 @@ export function ProductBacklogEditModal(props: Props): JSX.Element {
               </select>
             </div>
           </div>
+          {props.productBacklog && (
+            <>
+              <div>
+                <label htmlFor="sprint-name" className="block text-sm font-medium leading-6 text-gray-900">
+                  ステータス
+                </label>
+                <div className="mt-2">
+                  <select className="block w-full px-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500" value={backLogItemProgress} onChange={(e) => setBackLogItemProgress(Number(e.target.value))}>
+                    <option value={ProductBacklogProgress.NOT_STARTED}>not started</option>
+                    <option value={ProductBacklogProgress.STARTED}>started</option>
+                    <option value={ProductBacklogProgress.HALF_WAY}>half way</option>
+                    <option value={ProductBacklogProgress.ALMOST_DONE}>almost done</option>
+                    <option value={ProductBacklogProgress.COMPLETED}>completed</option>
+                  </select>
+                </div>
+              </div>
+            </>
+          )
+          }
           <div>
             <label htmlFor="sprint-name" className="block text-sm font-medium leading-6 text-gray-900">
               メモ
@@ -107,7 +138,7 @@ export function ProductBacklogEditModal(props: Props): JSX.Element {
             </button>
           </div>
         </form>
-      </BaseModal>
+      </BaseModal >
     </>
   )
 }

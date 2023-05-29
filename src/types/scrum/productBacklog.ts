@@ -6,7 +6,6 @@ export interface ProductBacklog {
   title: string;
   description?: string;
   progress: number;
-  status: number;
   sprint?: Sprint;
   createdAt: string;
   updatedAt: string;
