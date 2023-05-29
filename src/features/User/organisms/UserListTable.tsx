@@ -2,7 +2,7 @@ import React from 'react'
 import { User } from '../../../types/user/user'
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
-const UserListTable = () => {
+const UserListTable: React.FC = () => {
 
   // TODO: 後々削除　テスト用データ
   const userData: User[] = [
