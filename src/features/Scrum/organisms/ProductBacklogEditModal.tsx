@@ -16,7 +16,7 @@ interface Props {
 export function ProductBacklogEditModal(props: Props): JSX.Element {
   const { isOpen, setIsOpen, isCreate } = props;
   const { sprintData, getSprintList } = useContext(SprintContext);
-  const { createProductBacklog } = useContext(ProductBacklogContext);
+  const { createProductBacklog, updateProductBacklog } = useContext(ProductBacklogContext);
 
   // formState
   const [backLogItemTitle, setBackLogItemTitle] = useState<string>('');
@@ -33,6 +33,10 @@ export function ProductBacklogEditModal(props: Props): JSX.Element {
 
 
   useEffect(() => {
+    setBackLogItemTitle('');
+    setCorrespondingSprint(undefined);
+    setBackLogItemDescription('');
+    setBackLogItemProgress(0);
     if (props.productBacklog) {
       setBackLogItemTitle(props.productBacklog.title);
       setCorrespondingSprint(props.productBacklog.sprint?.sprintId);
@@ -52,6 +56,7 @@ export function ProductBacklogEditModal(props: Props): JSX.Element {
       createProductBacklog(backLogItemTitle, backLogItemDescription, correspondingSprint);
       setIsOpen(false);
     } else {
+      updateProductBacklog(props.productBacklog?.productBacklogId!, backLogItemTitle, backLogItemDescription, backLogItemProgress, correspondingSprint);
       setIsOpen(false);
     }
   }

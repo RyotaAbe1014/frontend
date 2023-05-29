@@ -7,6 +7,7 @@ interface productBacklogAPI {
   createProductBacklog: (title: string, description: string, sprintId: string | undefined) => Promise<void>;
   getProductBacklogList: () => Promise<ProductBacklog[]>;
   deleteProductBacklog: (id: string) => Promise<void>;
+  updateProductBacklog: (id: string, title: string, description: string, progress: number, sprintId: string | undefined) => Promise<void>;
 }
 
 export const productBacklogAPI: productBacklogAPI = {
@@ -38,6 +39,23 @@ export const productBacklogAPI: productBacklogAPI = {
   },
   deleteProductBacklog: async (id: string) => {
     return await requireTokenApi.delete(`/scrum/product_backlog/delete/${id}/`)
+      .then((response: AxiosResponse) => {
+        return response.data;
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+  },
+  updateProductBacklog: async (id: string, title: string, description: string, progress: number, sprintId: string | undefined) => {
+    return await requireTokenApi.put(`/scrum/product_backlog/update/${id}/`,
+      {
+        title: title,
+        description: description,
+        progress: progress,
+        sprintId: sprintId
+      }
+    )
       .then((response: AxiosResponse) => {
         return response.data;
       })
