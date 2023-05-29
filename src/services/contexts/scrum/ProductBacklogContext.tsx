@@ -7,6 +7,7 @@ type ProductBacklogContextType = {
   productBacklogData: ProductBacklogType[] | undefined;
   createProductBacklog: (title: string, description: string, sprintId: string | undefined) => Promise<void>;
   getProductBacklogList: () => Promise<void>;
+  deleteProductBacklog: (id: string) => Promise<void>;
 };
 
 export const ProductBacklogContext = React.createContext<ProductBacklogContextType>({
@@ -15,4 +16,5 @@ export const ProductBacklogContext = React.createContext<ProductBacklogContextTy
   productBacklogData: undefined,
   createProductBacklog: async () => { },
   getProductBacklogList: async () => { },
+  deleteProductBacklog: async () => { },
 });

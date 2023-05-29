@@ -4,6 +4,7 @@ import { ProductBacklog } from '../../../types/scrum/productBacklog';
 import { ProductBacklogProgress } from '../../../types/scrum/productBacklogProgress';
 import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductBacklogContext';
 import { ProductBacklogEditModal } from './ProductBacklogEditModal';
+import { ProductBacklogDeleteModal } from './ProductBacklogDeleteModal';
 
 export const ProductBacklogListTable: React.FC = () => {
   const { productBacklogData, getProductBacklogList } = useContext(ProductBacklogContext);
@@ -11,16 +12,20 @@ export const ProductBacklogListTable: React.FC = () => {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [productBacklog, setProductBacklog] = useState<ProductBacklog>();
 
+  const [productBacklogId, setProductBacklogId] = useState<string>('');
+  const [productBacklogTitle, setProductBacklogTitle] = useState<string>('');
+
   useEffect(() => {
     getProductBacklogList();
   }, []);
 
-  const handleDelete = () => {
-    // TODO: 削除モーダルを表示する
+  const handleDelete = (productBacklogId: string, productBacklogTitle: string) => {
+    setProductBacklogId(productBacklogId);
+    setProductBacklogTitle(productBacklogTitle);
+    setShowDeleteModal(true);
   }
 
   const handleEdit = (productBacklog: ProductBacklog) => {
-    // TODO: 更新モーダルを表示する
     setProductBacklog(productBacklog);
     setShowEditModal(true);
   }
@@ -28,9 +33,9 @@ export const ProductBacklogListTable: React.FC = () => {
   return (
     <>
       {/* 削除モーダル */}
-      {/* <SprintDeleteModal isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} sprintId={sprintId} sprintName={sprintName}/> */}
+      <ProductBacklogDeleteModal isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} productBacklogId={productBacklogId} productBacklogTitle={productBacklogTitle}/>
       {/* 詳細、更新モーダル */}
-      <ProductBacklogEditModal isOpen={showEditModal} setIsOpen={setShowEditModal} productBacklog={productBacklog} isCreate={false}/>
+      <ProductBacklogEditModal isOpen={showEditModal} setIsOpen={setShowEditModal} productBacklog={productBacklog} isCreate={false} />
       {/* テーブル */}
       <div className=" bg-gray-100 flex bg-gray-100 font-sans overflow-auto h-screen">
         <div className="w-full">
@@ -51,7 +56,7 @@ export const ProductBacklogListTable: React.FC = () => {
                 {productBacklogData && productBacklogData.length > 0 ? (
                   <>
                     {productBacklogData.map((productBacklog: ProductBacklog, index) => (
-                      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100 cursor-pointer" onClick={() => handleEdit(productBacklog)}>
+                      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                         <td className="py-3 px-6 text-left whitespace-nowrap">
                           <div className="flex text-left">
                             <span className="font-medium">{productBacklog.title}</span>
@@ -97,7 +102,10 @@ export const ProductBacklogListTable: React.FC = () => {
                         </td>
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center space-x-4">
-                            <button onClick={() => handleDelete()}>
+                            <button onClick={() => handleEdit(productBacklog)}>
+                              <FaEdit className="text-blue-400 hover:text-blue-600 cursor-pointer" size={20} />
+                            </button>
+                            <button onClick={() => handleDelete(productBacklog.productBacklogId, productBacklog.title)}>
                               <FaTrashAlt className="text-red-400 hover:text-red-600 cursor-pointer" size={20} />
                             </button>
                           </div>

@@ -6,6 +6,7 @@ import { ProductBacklog } from './../../../types/scrum/productBacklog';
 interface productBacklogAPI {
   createProductBacklog: (title: string, description: string, sprintId: string | undefined) => Promise<void>;
   getProductBacklogList: () => Promise<ProductBacklog[]>;
+  deleteProductBacklog: (id: string) => Promise<void>;
 }
 
 export const productBacklogAPI: productBacklogAPI = {
@@ -35,4 +36,14 @@ export const productBacklogAPI: productBacklogAPI = {
         throw new Error(error.message);
       });
   },
+  deleteProductBacklog: async (id: string) => {
+    return await requireTokenApi.delete(`/scrum/product_backlog/delete/${id}/`)
+      .then((response: AxiosResponse) => {
+        return response.data;
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+  }
 };
