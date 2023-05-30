@@ -18,7 +18,7 @@ const AppRoutes: React.FC = () => {
         {/* Auth */}
         <Route path="/login" element={<Login />} />
         {/* Home */}
-        <Route path="/" element={<AuthRoute><Home /></AuthRoute>} />
+        <Route path="/" element={<AuthRoute><ProductBacklogList /></AuthRoute>} />
         {/* scrum */}
         <Route path='/sprint-list' element={<AuthRoute><SprintList /></AuthRoute>}/>
         <Route path='/product-backlog-list' element={<AuthRoute><ProductBacklogList /></AuthRoute>}/>
