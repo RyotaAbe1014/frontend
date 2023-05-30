@@ -23,9 +23,7 @@ export const useProductBacklog = (): useProductBacklog => {
         setLoading(true);
         setErrorMessage(undefined);
         const response: ProductBacklogType[] = await productBacklogAPI.getProductBacklogList();
-        if (response) {
-          setProductBacklogData(response);
-        }
+        setProductBacklogData(response);
       } catch (error: any) {
         setErrorMessage(error.message);
       } finally {

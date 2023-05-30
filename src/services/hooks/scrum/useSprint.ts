@@ -23,9 +23,7 @@ export const useSprint = (): useSprint => {
       setLoading(true);
       setErrorMessage(undefined);
       const response: SprintType[] = await sprintAPI.getSprintList();
-      if (response) {
-        setSprintData(response);
-      }
+      setSprintData(response);
     } catch (error: any) {
       setErrorMessage(error.message);
     } finally {
