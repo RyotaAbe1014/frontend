@@ -5,7 +5,7 @@ export const SprintBacklogList: React.FC = () => {
   return (
     <>
       <DefaultLayout>
-        <div>SprintBacklogList</div>
+        
       </DefaultLayout>
     </>
   )
