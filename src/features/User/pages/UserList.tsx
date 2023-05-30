@@ -1,14 +1,17 @@
 import React from 'react'
 import { DefaultLayout } from '../../../common/_components/_templates/DefaultLayout'
 import UserListTable from '../organisms/UserListTable'
+import { UserProvider } from '../../../services/providers/user/UserProvider'
 
 export const UserList: React.FC = () => {
 
   return (
     <>
-      <DefaultLayout >
-        <UserListTable />
-      </DefaultLayout>
+      <UserProvider>
+        <DefaultLayout >
+          <UserListTable />
+        </DefaultLayout>
+      </UserProvider>
     </>
   )
 }

@@ -1,30 +1,17 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { User } from '../../../types/user/user'
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { UserContext } from '../../../services/contexts/user/UserContext';
 
 const UserListTable: React.FC = () => {
 
-  // TODO: 後々削除　テスト用データ
-  const userData: User[] = [
-    {
-      id: '01',
-      username: 'test_user',
-      email: 'test_email',
-      isActive: true,
-      isStaff: true,
-      createdAt: '2023-05-22T14:56:36.585364Z',
-      updatedAt: '2023-05-22T14:56:36.585364Z'
-    },
-    {
-      id: '02',
-      username: 'test_user',
-      email: 'test_email',
-      isActive: true,
-      isStaff: true,
-      createdAt: '2023-05-22T14:56:36.585364Z',
-      updatedAt: '2023-05-22T14:56:36.585364Z'
-    }
-  ]
+  const { userData, getUserList } = useContext(UserContext);
+
+
+  useEffect(() => {
+    getUserList();
+  }, []);
+
 
   return (
     <>

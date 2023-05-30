@@ -38,9 +38,9 @@ export const SprintListTable: React.FC = () => {
   return (
     <>
       {/* 削除モーダル */}
-      <SprintDeleteModal isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} sprintId={sprintId} sprintName={sprintName}/>
+      <SprintDeleteModal isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} sprintId={sprintId} sprintName={sprintName} />
       {/* 更新モーダル */}
-      <SprintEditModal isOpen={showEditModal} setIsOpen={setShowEditModal} isCreate={false} sprintId={sprintId} sprintName={sprintName} sprintStartDate={sprintStartDate} sprintEndDate={sprintEndDate}/>
+      <SprintEditModal isOpen={showEditModal} setIsOpen={setShowEditModal} isCreate={false} sprintId={sprintId} sprintName={sprintName} sprintStartDate={sprintStartDate} sprintEndDate={sprintEndDate} />
       {/* テーブル */}
       <div className=" bg-gray-100 flex bg-gray-100 font-sans overflow-auto h-screen">
         <div className="w-full">
