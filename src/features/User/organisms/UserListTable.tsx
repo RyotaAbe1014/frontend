@@ -26,7 +26,6 @@ const UserListTable: React.FC = () => {
                   <th className="py-3 px-6 text-left">メールアドレス</th>
                   <th className="py-3 px-6 text-left">作成日</th>
                   <th className="py-3 px-6 text-left">更新日</th>
-                  <th className="py-3 px-6 text-left">アクション</th>
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
@@ -52,18 +51,6 @@ const UserListTable: React.FC = () => {
                         <td className="py-3 px-6 text-left">
                           <div className="flex items-center">
                             <span>{user.updatedAt.split('T')[0]}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-6 text-left">
-                          <div className="flex items-center space-x-4">
-                            <button>
-                              {/* <button onClick={() => handleEdit(user.id, user.username, user.createdAt, user.updatedAt)}> */}
-                              <FaEdit className="text-blue-400 hover:text-blue-600 cursor-pointer" size={20} />
-                            </button>
-                            {/* <button onClick={() => handleDelete(user.id, user.username)}> */}
-                            <button>
-                              <FaTrashAlt className="text-red-400 hover:text-red-600 cursor-pointer" size={20} />
-                            </button>
                           </div>
                         </td>
                       </tr>
