@@ -35,7 +35,8 @@ function SortableItem(props: any) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} className='bg-white p-4 rounded-md shadow-md max-w-xs'>
-      Item {props.id}
+      <p>Item {props.id}</p> 
+      <p>テスト</p>
     </div>
   );
 }
@@ -73,8 +74,16 @@ export const SprintBacklogList: React.FC = () => {
           items={items}
           strategy={verticalListSortingStrategy}
         >
-          <div className='space-y-4  bg-white p-4 rounded-md shadow-md max-w-xs'>
-          {items.map(id => <SortableItem key={id} id={id} />)}
+          <div className='flex w-full'>
+            <div className='space-y-4  bg-white p-4 rounded-md shadow-md w-72'>
+              {items.map(id => <SortableItem key={id} id={id} />)}
+            </div>
+            <div className='space-y-4  bg-white p-4 ml-4 rounded-md shadow-md w-72'>
+              {items.map(id => <SortableItem key={id} id={id} />)}
+            </div>
+            <div className='space-y-4  bg-white p-4 ml-4 rounded-md shadow-md w-72'>
+              {items.map(id => <SortableItem key={id} id={id} />)}
+            </div>
           </div>
         </SortableContext>
       </DndContext>
