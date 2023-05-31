@@ -1,12 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { User } from '../../../types/user/user';
+
 interface LinkType {
   label: string;
   to: string;
 }
 
 const SideMenu: React.FC = () => {
+
+  const storage_user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') || '{}') : {};
+  const user: User = storage_user.user;
+
   const links: LinkType[] = [
     {
       label: 'プロダクトバックログ',
@@ -19,12 +25,17 @@ const SideMenu: React.FC = () => {
     {
       label: 'スプリントバックログ',
       to: '/sprint-backlog-list',
-    },
-    {
-      label: 'ユーザ管理',
-      to: '/users',
-    },
+    }
   ];
+
+  if (user.isStaff) {
+    links.push(
+      {
+        label: 'ユーザ管理',
+        to: '/users',
+      }
+    )
+  }
 
   return (
     <aside className="h-screen w-2/12 bg-white p-6 shadow flex flex-col">
