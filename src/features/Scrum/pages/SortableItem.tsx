@@ -3,9 +3,15 @@ import { CSS } from "@dnd-kit/utilities";
 import { UniqueIdentifier } from "@dnd-kit/core";
 import Item from "./Item";
 
-const SortableItem = ({ id }: { id: UniqueIdentifier }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+import { SprintBacklog } from "../../../types/scrum/sprintBacklog";
+
+interface Props {
+  id: UniqueIdentifier;
+  item: SprintBacklog;
+}
+
+const SortableItem: React.FC<Props> = ({ id, item }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   return (
     <div
@@ -14,7 +20,7 @@ const SortableItem = ({ id }: { id: UniqueIdentifier }) => {
       {...attributes}
       {...listeners}
     >
-      <Item id={id} />
+      <Item id={id} item={item} />
     </div>
   );
 };

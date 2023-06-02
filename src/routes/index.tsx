@@ -8,8 +8,6 @@ import { SprintList } from '../features/Scrum/pages/SprintList';
 import { UserList } from '../features/User/pages/UserList';
 import { ProductBacklogList } from '../features/Scrum/pages/ProductBacklogList';
 import { SprintBacklogList } from '../features/Scrum/pages/SprintBacklogList';
-import { Sample } from '../features/Scrum/pages/Sample';
-import Sample2 from '../features/Scrum/pages/Sample2';
 import { SprintProvider } from '../services/providers/scrum/SprintProvider';
 
 
@@ -27,10 +25,6 @@ const AppRoutes: React.FC = () => {
         <Route path='/sprint-backlog-list' element={<AuthRoute><SprintProvider><SprintBacklogList /></SprintProvider></AuthRoute>} />
         {/* user */}
         <Route path="/users" element={<AuthRoute><UserList /></AuthRoute>} />
-
-        {/* sample */}
-        <Route path="/sample" element={<Sample />} />
-        <Route path="/sample2" element={<Sample2 />} />
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>

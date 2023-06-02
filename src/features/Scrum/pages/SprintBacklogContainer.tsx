@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, ReactElement, useCallback, MouseEvent, KeyboardEvent } from "react";
 import {
   DndContext,
   DragOverlay,
   closestCorners,
-  KeyboardSensor,
+  MouseSensor as LibMouseSensor,
+  KeyboardSensor as LibKeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -15,29 +16,126 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import SortableContainer from "./SortableContainer";
 import Item from "./Item";
-import { DefaultLayout } from "../../../common/_components/_templates/DefaultLayout";
+import { SprintBacklog } from "../../../types/scrum/sprintBacklog";
 
-const Sample2 = () => {
+
+interface Props {
+  correspondingSprintId: string;
+}
+
+
+export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId }) => {
   // ドラッグ&ドロップでソート可能なリスト
-  const [items, setItems] = useState<{
-    [key: string]: string[];
-  }>({
-    notStarted: ["A", "B", "C"],
-    inProgress: ["D", "E", "F"],
-    review: ["G", "H", "I"],
-    done: [],
+  const [items, setItems] = useState<{ [key: string]: SprintBacklog[]; }>({
+    notStarted: [
+      {
+        sprintBacklogId: "A",
+        title: "Title A",
+        description: "Description A",
+        progress: 0,
+        createdAt: "2023-01-01",
+        updatedAt: "2023-01-01",
+        updatedBy: "User"
+      },
+    ],
+    inProgress: [
+      {
+        sprintBacklogId: "D",
+        title: "Title D",
+        description: "Description D",
+        progress: 25,
+        createdAt: "2023-02-01",
+        updatedAt: "2023-02-01",
+        updatedBy: "User"
+      },
+    ],
+    review: [
+      {
+        sprintBacklogId: "G",
+        title: "Title G",
+        description: "Description G",
+        progress: 50,
+        createdAt: "2023-03-01",
+        updatedAt: "2023-03-01",
+        updatedBy: "User"
+      },
+      {
+        sprintBacklogId: "H",
+        title: "Title H",
+        description: "Description H",
+        progress: 50,
+        createdAt: "2023-03-01",
+        updatedAt: "2023-03-01",
+        updatedBy: "User"
+      },
+      {
+        sprintBacklogId: "I",
+        title: "Title I",
+        description: "Description I",
+        progress: 50,
+        createdAt: "2023-03-01",
+        updatedAt: "2023-03-01",
+        updatedBy: "User"
+      },
+    ],
+    done: [
+      {
+        sprintBacklogId: "J",
+        title: "Title J",
+        description: "Description J",
+        progress: 100,
+        createdAt: "2023-03-01",
+        updatedAt: "2023-03-01",
+        updatedBy: "User"
+      },
+    ],
   });
 
   //リストのリソースid（リストの値）
   const [activeId, setActiveId] = useState<UniqueIdentifier>();
+  const [sprintBacklog, setSprintBacklog] = useState<SprintBacklog | undefined>(undefined);
 
   // ドラッグの開始、移動、終了などにどのような入力を許可するかを決めるprops
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  // data-dndkit-disabled-dnd-flag="true" が指定されている要素はドラッグ無効にする
+  function shouldHandleEvent(element: HTMLElement | null) {
+    let cur = element;
+
+    while (cur) {
+      if (cur.dataset && cur.dataset.dndkitDisabledDndFlag) {
+        return false;
+      }
+      cur = cur.parentElement;
+    }
+
+    return true;
+  }
+
+  class MouseSensor extends LibMouseSensor {
+    static activators = [
+      {
+        eventName: "onMouseDown" as const,
+        handler: ({ nativeEvent: event }: MouseEvent): boolean => {
+          return shouldHandleEvent(event.target as HTMLElement);
+        },
+      },
+    ];
+  }
+  
+  // LibKeyboardSensor を override してドラッグ無効にする
+  class KeyboardSensor extends LibKeyboardSensor {
+    static activators = [
+      {
+        eventName: "onKeyDown" as const,
+        handler: ({ nativeEvent: event }: KeyboardEvent<Element>): boolean => {
+          return shouldHandleEvent(event.target as HTMLElement);
+        },
+      },
+    ];
+  }
+  // useSensor と useSensors を使って上書きした Sensor を DndContext に紐付ける
+  const mouseSensor = useSensor(MouseSensor);
+  const keyboardSensor = useSensor(KeyboardSensor);
+  const sensors = useSensors(mouseSensor, keyboardSensor);
 
   //各コンテナ取得関数
   const findContainer = (id: UniqueIdentifier) => {
@@ -45,17 +143,24 @@ const Sample2 = () => {
       return id;
     }
     return Object.keys(items).find((key: string) =>
-      items[key].includes(id.toString())
+      items[key].some(item => item.sprintBacklogId === id.toString())
     );
   };
 
   // ドラッグ開始時に発火する関数
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
-    //ドラッグしたリソースのid
     const id = active.id.toString();
     setActiveId(id);
+
+    const containerKey = findContainer(id);
+
+    if (containerKey !== undefined) {
+      const item = items[containerKey].find(item => item.sprintBacklogId === id);
+      setSprintBacklog(item);
+    }
   };
+
 
   //ドラッグ可能なアイテムがドロップ可能なコンテナの上に移動時に発火する関数
   const handleDragOver = (event: DragOverEvent) => {
@@ -87,8 +192,8 @@ const Sample2 = () => {
       const overItems = prev[overContainer];
 
       // 配列のインデックス取得
-      const activeIndex = activeItems.indexOf(id);
-      const overIndex = overItems.indexOf(overId.toString());
+      const activeIndex = activeItems.findIndex(item => item.sprintBacklogId === id);
+      const overIndex = overItems.findIndex(item => item.sprintBacklogId === overId.toString());
 
       let newIndex;
       if (overId in prev) {
@@ -105,7 +210,7 @@ const Sample2 = () => {
       return {
         ...prev,
         [activeContainer]: [
-          ...prev[activeContainer].filter((item) => item !== active.id),
+          ...prev[activeContainer].filter((item) => item.sprintBacklogId !== active.id),
         ],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),
@@ -140,8 +245,8 @@ const Sample2 = () => {
     }
 
     // 配列のインデックス取得
-    const activeIndex = items[activeContainer].indexOf(id);
-    const overIndex = items[overContainer].indexOf(overId.toString());
+    const activeIndex = items[activeContainer].findIndex(item => item.sprintBacklogId === id);
+    const overIndex = items[overContainer].findIndex(item => item.sprintBacklogId === overId.toString());
 
     if (activeIndex !== overIndex) {
       setItems((items) => ({
@@ -167,30 +272,28 @@ const Sample2 = () => {
       >
         {/* SortableContainer */}
         <SortableContainer
-          id="container1"
+          id="notStarted"
           items={items.notStarted}
-          label="not started"
+          label="notStarted"
         />
         <SortableContainer
-          id="container2"
-          label="in progress"
+          id="inProgress"
+          label="inProgress"
           items={items.inProgress}
         />
         <SortableContainer
-          id="container3"
+          id="review"
           label="review"
           items={items.review}
         />
         <SortableContainer
-          id="container4"
+          id="done"
           label="done"
           items={items.done}
         />
         {/* DragOverlay */}
-        <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
+        <DragOverlay>{activeId ? <Item id={activeId} item={sprintBacklog} /> : null}</DragOverlay>
       </DndContext>
     </div>
   );
 };
-
-export default Sample2;
