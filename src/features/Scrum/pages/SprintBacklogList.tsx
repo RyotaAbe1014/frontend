@@ -1,92 +1,47 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
+
+import Sample2 from './Sample2';
 import { DefaultLayout } from '../../../common/_components/_templates/DefaultLayout';
+import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
 
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-
-function SortableItem(props: any) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: props.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className='bg-white p-4 rounded-md shadow-md max-w-xs'>
-      <p>Item {props.id}</p> 
-      <p>テスト</p>
-    </div>
-  );
-}
 
 export const SprintBacklogList: React.FC = () => {
-  const [items, setItems] = useState(["1", "2", "3"]);
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  const { sprintData, getSprintList } = useContext(SprintContext);
 
-  function handleDragEnd(event: any) {
-    const { active, over } = event;
-
-    if (active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
-
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
-  }
+  useEffect(() => {
+    const fetchSprints = async () => {
+      await getSprintList();
+    };
+    fetchSprints();
+    console.log('sprintData', sprintData);
+  }, [getSprintList]);
 
   return (
     <DefaultLayout>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext
-          items={items}
-          strategy={verticalListSortingStrategy}
-        >
-          <div className='flex w-full'>
-            <div className='space-y-4  bg-white p-4 rounded-md shadow-md w-72'>
-              {items.map(id => <SortableItem key={id} id={id} />)}
-            </div>
-            <div className='space-y-4  bg-white p-4 ml-4 rounded-md shadow-md w-72'>
-              {items.map(id => <SortableItem key={id} id={id} />)}
-            </div>
-            <div className='space-y-4  bg-white p-4 ml-4 rounded-md shadow-md w-72'>
-              {items.map(id => <SortableItem key={id} id={id} />)}
-            </div>
-          </div>
-        </SortableContext>
-      </DndContext>
+      <div>
+        <label htmlFor="sprint-name" className="block text-sm font-medium leading-6 text-gray-900">
+          対応スプリント
+        </label>
+        <div className="mt-2">
+          <select className="block w-full px-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/4">
+            <option value={undefined}>選択してください</option>
+            {sprintData && sprintData.length > 0 && (
+              sprintData.map((sprint, index) => (
+                <option key={index} value={sprint.sprintId}>{sprint.name}</option>
+              ))
+            )}
+          </select>
+        </div>
+      </div>
+      <div className="max-h-screen overflow-x-scroll">
+        <p>プロジェクトバックログ1</p>
+        <Sample2 />
+        <p>プロジェクトバックログ2</p>
+        <Sample2 />
+        <p>プロジェクトバックログ3</p>
+        <Sample2 />
+      </div>
     </DefaultLayout>
-  );
+  )
 }
+
