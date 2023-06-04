@@ -1,11 +1,10 @@
-import React, { useState, ReactElement, useCallback, MouseEvent, KeyboardEvent } from "react";
+import React, { useState, MouseEvent, KeyboardEvent } from "react";
 import {
   DndContext,
   DragOverlay,
   closestCorners,
   MouseSensor as LibMouseSensor,
   KeyboardSensor as LibKeyboardSensor,
-  PointerSensor,
   useSensor,
   useSensors,
   UniqueIdentifier,
@@ -13,7 +12,8 @@ import {
   DragOverEvent,
   DragEndEvent,
 } from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { arrayMove } from "@dnd-kit/sortable";
+
 import SortableContainer from "./SortableContainer";
 import Item from "./Item";
 import { SprintBacklog } from "../../../types/scrum/sprintBacklog";
