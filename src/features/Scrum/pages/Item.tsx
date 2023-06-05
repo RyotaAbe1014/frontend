@@ -1,8 +1,9 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import { SprintBacklog } from "../../../types/scrum/sprintBacklog";
-import { SprintBacklogEditModal } from "../organisms/SprintBacklogEditModal";
+
 
 
 interface Props {
@@ -11,10 +12,9 @@ interface Props {
 }
 
 const Item: React.FC<Props> = ({ item }) => {
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   const handleEdit = () => {
-    setShowEditModal(true);
+    window.open(`/sprint-backlog-list/edit/${item?.sprintBacklogId}`, '_blank');
   }
   return (
     <>
@@ -33,7 +33,6 @@ const Item: React.FC<Props> = ({ item }) => {
           </button>
         </div>
       </div>
-      <SprintBacklogEditModal isCreate={false} isOpen={showEditModal} setIsOpen={setShowEditModal} />
     </>
   );
 };
