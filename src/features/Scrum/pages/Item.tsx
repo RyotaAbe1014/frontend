@@ -14,7 +14,11 @@ interface Props {
 const Item: React.FC<Props> = ({ item }) => {
 
   const handleEdit = () => {
-    window.open(`/sprint-backlog-list/edit/${item?.sprintBacklogId}`, '_blank');
+    const editTab = window.open(`/sprint-backlog-list/edit/${item?.sprintBacklogId}`, '_blank');
+    editTab?.addEventListener('beforeunload', () => {
+      window.focus();
+      
+    });
   }
   return (
     <>

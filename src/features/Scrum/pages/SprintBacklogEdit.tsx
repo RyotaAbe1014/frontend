@@ -13,7 +13,9 @@ export const SprintBacklogEdit: React.FC = () => {
                         {/* ここにコンテンツを追加 */}
                         <h1 className='text-3xl font-bold pt-4'>詳細画面</h1>
                         <div className='flex justify-end mt-1'>
-                            <button className='text-white px-4 py-2 rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500'>
+                            <button className='text-white px-4 py-2 rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500'
+                                onClick={() => { window.close() }}
+                            >
                                 <FaBackspace />
                             </button>
                         </div>
