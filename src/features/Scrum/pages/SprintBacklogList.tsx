@@ -18,6 +18,13 @@ export const SprintBacklogList: React.FC = () => {
     fetchSprints();
   }, [getSprintList]);
 
+  const handleCreate = () => {
+    const editTab = window.open(`/sprint-backlog-list/create/`, '_blank');
+    editTab?.addEventListener('beforeunload', () => {
+      window.focus();
+    });
+  }
+  
   return (
     <DefaultLayout>
       <div>
@@ -41,8 +48,17 @@ export const SprintBacklogList: React.FC = () => {
       </div>
       {correspondingSprint && (
         <div className="max-h-screen overflow-x-scroll pt-6">
-          <p>プロジェクトバックログ1</p>
-          <SprintBacklogContainer correspondingSprintId={correspondingSprint} />
+          <div className='flex justify-between'>
+            <p className='text-xl font-bold'>プロジェクトバックログ1</p>
+            <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={handleCreate}
+            >
+              アイテム作成
+            </button>
+          </div>
+          <div className='pt-6'>
+            <SprintBacklogContainer correspondingSprintId={correspondingSprint} />
+          </div>
         </div>
       )}
 
