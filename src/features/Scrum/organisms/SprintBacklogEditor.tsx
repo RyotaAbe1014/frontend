@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FaBackspace } from 'react-icons/fa';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
 import { UserContext } from '../../../services/contexts/user/UserContext';
+import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductBacklogContext';
+import { SprintBacklogContext } from '../../../services/contexts/scrum/SprintBacklogContext';
 
 
 interface Props {
@@ -12,8 +14,11 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
   const { isCreate } = props;
   const { sprintData, getSprintList } = useContext(SprintContext);
   const { userData, getUserList } = useContext(UserContext);
+  const { productBacklogData, getProductBacklogList } = useContext(ProductBacklogContext);
+  const { createSprintBacklog, createdMessage } = useContext(SprintBacklogContext);
 
   const [title, setTitle] = useState<string>('');
+  const [correspondingProductBacklog, setCorrespondingProductBacklog] = useState<string | undefined>(undefined);
   const [correspondingSprint, setCorrespondingSprint] = useState<string | undefined>(undefined);
   const [status, setStatus] = useState<number>(0);
   const [priority, setPriority] = useState<number>(0);
@@ -22,17 +27,15 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
 
   useEffect(() => {
     getSprintList();
-  }, []);
-
-  useEffect(() => {
     getUserList();
+    getProductBacklogList();
   }, []);
-
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isCreate) {
       // TODO: create
+      createSprintBacklog(title, correspondingSprint, correspondingProductBacklog, status, priority, assignee, description);
     } else {
       // TODO: update
     }
@@ -41,6 +44,7 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
   return (
     <>
       <h1 className='text-3xl font-bold pt-4'>{isCreate ? 'スプリントバックログ作成' : 'スプリントバックログ編集'}</h1>
+      {createdMessage && <p className='text-green-500'>{createdMessage}</p>}
       <div className='flex justify-end mt-1'>
         <button className='text-white px-4 py-2 rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500'
           onClick={() => { window.close() }}
@@ -51,7 +55,9 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
       <div className='bg-white p-6 rounded-md shadow-md mt-1'>
         <form onSubmit={handleSubmit}>
           <div className='flex justify-end mt-4'>
-            <button className='text-white px-4 py-2 rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500'>更新</button>
+            <button className='text-white px-4 py-2 rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500'>
+              {isCreate ? '作成' : '更新'}
+            </button>
           </div>
           <div className='grid grid-cols-2 gap-4'>
             <div className='col-span-2'>
@@ -59,6 +65,17 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
               <input type="text" name='title' id='title' className='w-full border border-gray-300 rounded-md p-2 mt-1'
                 value={title} onChange={(e) => { setTitle(e.target.value) }}
               />
+            </div>
+            <div className='col-span-2'>
+              <label htmlFor="sprint" className='text-sm'>プロダクトバックログアイテム</label>
+              <select name="sprint" id="sprint" className='w-full border border-gray-300 rounded-md p-2 mt-1' value={correspondingProductBacklog} onChange={(e) => { setCorrespondingProductBacklog(e.target.value) }}>
+                <option value={undefined}>紐付けなし</option>
+                {productBacklogData && productBacklogData.length > 0 && (
+                  productBacklogData.map((productBacklog, index) => (
+                    <option key={index} value={productBacklog.productBacklogId}>{productBacklog.title}</option>
+                  ))
+                )}
+              </select>
             </div>
             <div>
               <label htmlFor="sprint" className='text-sm'>対応スプリント</label>
