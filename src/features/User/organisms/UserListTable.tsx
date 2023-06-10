@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { User } from '../../../types/user/user'
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { User } from '../../../types/user/user';
 import { UserContext } from '../../../services/contexts/user/UserContext';
 
 const UserListTable: React.FC = () => {
