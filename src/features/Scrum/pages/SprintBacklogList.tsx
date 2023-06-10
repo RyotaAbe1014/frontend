@@ -23,6 +23,7 @@ export const SprintBacklogList: React.FC = () => {
     const editTab = window.open(`/sprint-backlog-list/create/`, '_blank');
     editTab?.addEventListener('beforeunload', () => {
       window.focus();
+      // TODO: もう一回取得する
     });
   }
 
@@ -40,6 +41,7 @@ export const SprintBacklogList: React.FC = () => {
               onChange={(e) => setCorrespondingSprint(e.target.value)}
             >
               <option value={undefined}></option>
+              <option value={'No corresponding sprint'}>紐付けなし</option>
               {sprintData && sprintData.length > 0 && (
                 sprintData.map((sprint, index) => (
                   <option key={index} value={sprint.sprintId}>{sprint.name}</option>
