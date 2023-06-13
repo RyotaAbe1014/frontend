@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, KeyboardEvent } from "react";
+import React, { useState, MouseEvent, KeyboardEvent, useEffect } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -25,71 +25,97 @@ interface Props {
 
 
 export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId }) => {
+  console.log('SprintBacklogContainer');
+  console.log('correspondingSprintId: ', correspondingSprintId);
   // ドラッグ&ドロップでソート可能なリスト
+  // アイテムの状態は、notStarted, inProgress, review, doneの4つ
+  // TODO: このitemsは、hooksに移動する
   const [items, setItems] = useState<{ [key: string]: SprintBacklog[]; }>({
-    notStarted: [
-      {
-        sprintBacklogId: "A",
-        title: "Title A",
-        description: "Description A",
-        progress: 0,
-        createdAt: "2023-01-01",
-        updatedAt: "2023-01-01",
-        updatedBy: "User"
-      },
-    ],
-    inProgress: [
-      {
-        sprintBacklogId: "D",
-        title: "Title D",
-        description: "Description D",
-        progress: 25,
-        createdAt: "2023-02-01",
-        updatedAt: "2023-02-01",
-        updatedBy: "User"
-      },
-    ],
-    review: [
-      {
-        sprintBacklogId: "G",
-        title: "Title G",
-        description: "Description G",
-        progress: 50,
-        createdAt: "2023-03-01",
-        updatedAt: "2023-03-01",
-        updatedBy: "User"
-      },
-      {
-        sprintBacklogId: "H",
-        title: "Title H",
-        description: "Description H",
-        progress: 50,
-        createdAt: "2023-03-01",
-        updatedAt: "2023-03-01",
-        updatedBy: "User"
-      },
-      {
-        sprintBacklogId: "I",
-        title: "Title I",
-        description: "Description I",
-        progress: 50,
-        createdAt: "2023-03-01",
-        updatedAt: "2023-03-01",
-        updatedBy: "User"
-      },
-    ],
-    done: [
-      {
-        sprintBacklogId: "J",
-        title: "Title J",
-        description: "Description J",
-        progress: 100,
-        createdAt: "2023-03-01",
-        updatedAt: "2023-03-01",
-        updatedBy: "User"
-      },
-    ],
+    notStarted: [],
+    inProgress: [],
+    review: [],
+    done: [],
   });
+
+  // 初期取得
+  useEffect(() => {
+    // correspondingSprintIdがnoCorrespondingSprintの場合は、紐付けなしのアイテムを取得する
+    // それ以外の場合は、対応スプリントに紐付けられたアイテムを取得する
+    if (correspondingSprintId === 'noCorrespondingSprint') {
+      // TODO: 紐付けなしのアイテムを取得する
+      console.log('紐付けなしのアイテムを取得する');
+    } else {
+      // TODO: 対応スプリントに紐付けられたアイテムを取得する
+      console.log('対応スプリントに紐付けられたアイテムを取得する');
+    }
+  }, [correspondingSprintId]);
+
+
+  // test用
+  // const [items, setItems] = useState<{ [key: string]: SprintBacklog[]; }>({
+  //   notStarted: [
+  //     {
+  //       sprintBacklogId: "A",
+  //       title: "Title A",
+  //       description: "Description A",
+  //       progress: 0,
+  //       createdAt: "2023-01-01",
+  //       updatedAt: "2023-01-01",
+  //       updatedBy: "User"
+  //     },
+  //   ],
+  //   inProgress: [
+  //     {
+  //       sprintBacklogId: "D",
+  //       title: "Title D",
+  //       description: "Description D",
+  //       progress: 25,
+  //       createdAt: "2023-02-01",
+  //       updatedAt: "2023-02-01",
+  //       updatedBy: "User"
+  //     },
+  //   ],
+  //   review: [
+  //     {
+  //       sprintBacklogId: "G",
+  //       title: "Title G",
+  //       description: "Description G",
+  //       progress: 50,
+  //       createdAt: "2023-03-01",
+  //       updatedAt: "2023-03-01",
+  //       updatedBy: "User"
+  //     },
+  //     {
+  //       sprintBacklogId: "H",
+  //       title: "Title H",
+  //       description: "Description H",
+  //       progress: 50,
+  //       createdAt: "2023-03-01",
+  //       updatedAt: "2023-03-01",
+  //       updatedBy: "User"
+  //     },
+  //     {
+  //       sprintBacklogId: "I",
+  //       title: "Title I",
+  //       description: "Description I",
+  //       progress: 50,
+  //       createdAt: "2023-03-01",
+  //       updatedAt: "2023-03-01",
+  //       updatedBy: "User"
+  //     },
+  //   ],
+  //   done: [
+  //     {
+  //       sprintBacklogId: "J",
+  //       title: "Title J",
+  //       description: "Description J",
+  //       progress: 100,
+  //       createdAt: "2023-03-01",
+  //       updatedAt: "2023-03-01",
+  //       updatedBy: "User"
+  //     },
+  //   ],
+  // });
 
   //リストのリソースid（リストの値）
   const [activeId, setActiveId] = useState<UniqueIdentifier>();
