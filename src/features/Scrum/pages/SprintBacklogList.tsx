@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { SprintBacklogContainer } from './SprintBacklogContainer';
 import { DefaultLayout } from '../../../common/_components/_templates/DefaultLayout';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
-import { SprintProvider } from '../../../services/providers/scrum/SprintProvider';
 
 
 export const SprintBacklogList: React.FC = () => {
