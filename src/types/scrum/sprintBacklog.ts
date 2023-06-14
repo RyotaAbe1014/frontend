@@ -14,3 +14,17 @@ export interface SprintBacklog {
   updatedAt: string;
   updatedBy: string;
 }
+
+export interface SprintBacklogDTO {
+  sprintBacklogId: string | UniqueIdentifier;
+  productBacklogId?: string;
+  productBacklogTitle?: string;
+  sprintId?: string;
+  description?: string;
+  status: number;
+  priority: number;
+  assignee?: string;
+  createdAt: string;
+  updatedAt: string;
+  updatedBy: string;
+}
