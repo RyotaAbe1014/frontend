@@ -20,7 +20,7 @@ interface Props {
 
 
 export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId }) => {
-  const { sprintBacklogData, removeAllSprintBacklogState, getSprintBacklogNotCorrespondingSprintList, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog } = useContext(SprintBacklogContext);
+  const { sprintBacklogData, removeAllSprintBacklogState, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog } = useContext(SprintBacklogContext);
   // ドラッグ&ドロップでソート可能なリスト
   // アイテムの状態は、notStarted, inProgress, review, doneの4つ
   // 初期取得
@@ -33,8 +33,7 @@ export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId 
       };
       fetchSprintBacklogs();
     } else {
-      // TODO: 対応スプリントに紐付けられたアイテムを取得する
-      console.log('対応スプリントに紐付けられたアイテムを取得する');
+      getSprintBacklogList(correspondingSprintId);
     }
     return () => {
       removeAllSprintBacklogState();

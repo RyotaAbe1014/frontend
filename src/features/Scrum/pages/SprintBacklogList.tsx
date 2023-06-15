@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { SprintBacklogContainer } from './SprintBacklogContainer';
 import { DefaultLayout } from '../../../common/_components/_templates/DefaultLayout';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
-import { SprintBacklogProvider } from '../../../services/providers/scrum/SprintBacklog';
 import { SprintBacklogContext } from '../../../services/contexts/scrum/SprintBacklogContext';
 
 
@@ -12,7 +11,7 @@ export const SprintBacklogList: React.FC = () => {
 
   // formState
   const [correspondingSprint, setCorrespondingSprint] = useState<string | undefined>(undefined);
-  const { getSprintBacklogNotCorrespondingSprintList } = useContext(SprintBacklogContext);
+  const { getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList } = useContext(SprintBacklogContext);
 
   useEffect(() => {
     const fetchSprints = async () => {
@@ -32,6 +31,7 @@ export const SprintBacklogList: React.FC = () => {
         getSprintBacklogNotCorrespondingSprintList();
       } else {
         // TODO: ここで対応スプリントのバックログを取得する
+        getSprintBacklogList(correspondingSprint);
       }
     });
   }

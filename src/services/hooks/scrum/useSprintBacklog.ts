@@ -13,6 +13,7 @@ type useSprintBacklog = {
   removeAllSprintBacklogState: () => void;
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: () => Promise<void>;
+  getSprintBacklogList: (sprintId: string) => Promise<void>;
   handleDragOver: (event: DragOverEvent) => void;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
@@ -54,6 +55,36 @@ export const useSprintBacklog = (): useSprintBacklog => {
       setErrorMessage(undefined);
       // TODO: ここでAPIを叩く
       const response: SprintBacklogDTO[] = await sprintBacklogAPI.getSprintBacklogNotCorrespondingSprintList();
+
+      // 整形する際はforeachで回して、sprintBacklogのstatusの値を確認し、それぞれの配列に振り分ける
+      response.forEach((sprintBacklog: SprintBacklogDTO) => {
+        if (sprintBacklog.status === 0) {
+          setSprintBacklogData(prevData => ({ notStarted: [...prevData.notStarted, sprintBacklog], inProgress: prevData.inProgress, review: prevData.review, done: prevData.done }));
+        }
+        if (sprintBacklog.status === 1) {
+          setSprintBacklogData(prevData => ({ notStarted: prevData.notStarted, inProgress: [...prevData.inProgress, sprintBacklog], review: prevData.review, done: prevData.done }));
+        }
+        if (sprintBacklog.status === 2) {
+          setSprintBacklogData(prevData => ({ notStarted: prevData.notStarted, inProgress: prevData.inProgress, review: [...prevData.review, sprintBacklog], done: prevData.done }));
+        }
+        if (sprintBacklog.status === 3) {
+          setSprintBacklogData(prevData => ({ notStarted: prevData.notStarted, inProgress: prevData.inProgress, review: prevData.review, done: [...prevData.done, sprintBacklog] }));
+        }
+      });
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
+  // 紐づいているスプリントバックログを取得
+  const getSprintBacklogList = useCallback(async (sprintId: string) => {
+    try {
+      setLoading(true);
+      setErrorMessage(undefined);
+      // TODO: ここでAPIを叩く
+      const response: SprintBacklogDTO[] = await sprintBacklogAPI.getSprintBacklogList(sprintId);
 
       // 整形する際はforeachで回して、sprintBacklogのstatusの値を確認し、それぞれの配列に振り分ける
       response.forEach((sprintBacklog: SprintBacklogDTO) => {
@@ -220,5 +251,5 @@ export const useSprintBacklog = (): useSprintBacklog => {
     setActiveId(undefined);
   };
 
-  return { loading, errorMessage, isCreated, sprintBacklogData, removeAllSprintBacklogState, createSprintBacklog, getSprintBacklogNotCorrespondingSprintList, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog };
+  return { loading, errorMessage, isCreated, sprintBacklogData, removeAllSprintBacklogState, createSprintBacklog, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog };
 };

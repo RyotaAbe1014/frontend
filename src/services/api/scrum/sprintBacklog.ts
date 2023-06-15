@@ -5,6 +5,7 @@ import { AxiosError, AxiosResponse } from "axios";
 interface sprintBacklogAPI {
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: () => Promise<SprintBacklogDTO[]>;
+  getSprintBacklogList: (sprintId: string) => Promise<SprintBacklogDTO[]>;
 }
 
 export const sprintBacklogAPI: sprintBacklogAPI = {
@@ -37,5 +38,16 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
         console.log(error);
         throw new Error(error.message);
       });
-  }
+  },
+
+  getSprintBacklogList: async (sprintId: string) => {
+    return await requireTokenApi.get(`/scrum/sprint_backlog_list/${sprintId}`)
+      .then((response: AxiosResponse) => {
+        return response.data as SprintBacklogDTO[];
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+  },
 };
