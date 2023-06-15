@@ -1,7 +1,7 @@
 import { useDroppable } from "@dnd-kit/core";
 import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem";
-import { SprintBacklog } from "../../../types/scrum/sprintBacklog";
+import { SprintBacklogDTO } from "../../../types/scrum/sprintBacklog";
 
 
 
@@ -12,7 +12,7 @@ const SortableContainer = ({
   label,
 }: {
   id: string;
-  items: SprintBacklog[];
+  items: SprintBacklogDTO[];
   label: string;
 }) => {
   const { setNodeRef } = useDroppable({
@@ -24,9 +24,9 @@ const SortableContainer = ({
       <SortableContext id={id} items={items.map(item => item.sprintBacklogId)} strategy={rectSortingStrategy}>
         <div
           ref={setNodeRef}
-          className="w-full border-2 p-5 mt-2 rounded-md shadow-md bg-white"
+          className="w-full border-2 p-5 mt-2 rounded-md shadow-md bg-white max-h-screen overflow-x-scroll"
         >
-          {items.map((item: SprintBacklog) => (
+          {items.map((item: SprintBacklogDTO) => (
             <SortableItem key={item.sprintBacklogId} id={item.sprintBacklogId} item={item}/>
           ))}
         </div>

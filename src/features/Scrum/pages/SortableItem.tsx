@@ -3,11 +3,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { UniqueIdentifier } from "@dnd-kit/core";
 import Item from "./Item";
 
-import { SprintBacklog } from "../../../types/scrum/sprintBacklog";
+import { SprintBacklog, SprintBacklogDTO } from "../../../types/scrum/sprintBacklog";
 
 interface Props {
   id: UniqueIdentifier;
-  item: SprintBacklog;
+  item: SprintBacklogDTO;
 }
 
 const SortableItem: React.FC<Props> = ({ id, item }) => {

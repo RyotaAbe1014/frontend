@@ -2,13 +2,13 @@ import { UniqueIdentifier } from "@dnd-kit/core";
 import { useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
-import { SprintBacklog } from "../../../types/scrum/sprintBacklog";
+import { SprintBacklogDTO } from "../../../types/scrum/sprintBacklog";
 
 
 
 interface Props {
   id: UniqueIdentifier;
-  item?: SprintBacklog;
+  item?: SprintBacklogDTO;
 }
 
 const Item: React.FC<Props> = ({ item }) => {
@@ -25,7 +25,7 @@ const Item: React.FC<Props> = ({ item }) => {
       <div className="w-full h-48 my-2.5 bg-white p-4 rounded-md shadow-md">
         <p className="text-lg font-bold">{item?.title}</p>
         <p>最終更新者: <span>{item?.updatedBy}</span></p>
-        <p>最終更新日: <span>{item?.updatedAt}</span></p>
+        <p>最終更新日: <span>{item?.updatedAt.split('T')[0]}</span></p>
 
         <div className="pt-5">
           <button

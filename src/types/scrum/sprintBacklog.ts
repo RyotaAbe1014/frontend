@@ -20,6 +20,7 @@ export interface SprintBacklogDTO {
   productBacklogId?: string;
   productBacklogTitle?: string;
   sprintId?: string;
+  title: string;
   description?: string;
   status: number;
   priority: number;
