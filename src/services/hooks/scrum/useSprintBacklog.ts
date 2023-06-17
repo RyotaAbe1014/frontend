@@ -12,8 +12,8 @@ type useSprintBacklog = {
   sprintBacklogData: { [key: string]: SprintBacklogDTO[]; };
   removeAllSprintBacklogState: () => void;
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => Promise<void>;
-  getSprintBacklogNotCorrespondingSprintList: () => Promise<void>;
-  getSprintBacklogList: (sprintId: string) => Promise<void>;
+  getSprintBacklogNotCorrespondingSprintList: (correspondingProductBacklogId: string | undefined) => Promise<void>;
+  getSprintBacklogList: (sprintId: string, correspondingProductBacklogId: string | undefined) => Promise<void>;
   handleDragOver: (event: DragOverEvent) => void;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
@@ -49,12 +49,12 @@ export const useSprintBacklog = (): useSprintBacklog => {
   }, []);
 
   // スプリントに紐づいていないスプリントバックログを取得
-  const getSprintBacklogNotCorrespondingSprintList = useCallback(async () => {
+  const getSprintBacklogNotCorrespondingSprintList = useCallback(async (correspondingProductBacklogId: string | undefined) => {
     try {
       setLoading(true);
       setErrorMessage(undefined);
       // TODO: ここでAPIを叩く
-      const response: SprintBacklogDTO[] = await sprintBacklogAPI.getSprintBacklogNotCorrespondingSprintList();
+      const response: SprintBacklogDTO[] = await sprintBacklogAPI.getSprintBacklogNotCorrespondingSprintList(correspondingProductBacklogId);
 
       // 整形する際はforeachで回して、sprintBacklogのstatusの値を確認し、それぞれの配列に振り分ける
       response.forEach((sprintBacklog: SprintBacklogDTO) => {
@@ -77,14 +77,14 @@ export const useSprintBacklog = (): useSprintBacklog => {
       setLoading(false);
     }
   }, []);
-  
+
   // 紐づいているスプリントバックログを取得
-  const getSprintBacklogList = useCallback(async (sprintId: string) => {
+  const getSprintBacklogList = useCallback(async (sprintId: string, productBacklogId: string | undefined) => {
     try {
       setLoading(true);
       setErrorMessage(undefined);
       // TODO: ここでAPIを叩く
-      const response: SprintBacklogDTO[] = await sprintBacklogAPI.getSprintBacklogList(sprintId);
+      const response: SprintBacklogDTO[] = await sprintBacklogAPI.getSprintBacklogList(sprintId, productBacklogId);
 
       // 整形する際はforeachで回して、sprintBacklogのstatusの値を確認し、それぞれの配列に振り分ける
       response.forEach((sprintBacklog: SprintBacklogDTO) => {

@@ -10,16 +10,16 @@ import {
 } from "@dnd-kit/core";
 import SortableContainer from "./SortableContainer";
 import Item from "./Item";
-import { SprintBacklogDTO } from "../../../types/scrum/sprintBacklog";
 import { SprintBacklogContext } from "../../../services/contexts/scrum/SprintBacklogContext";
 
 
 interface Props {
   correspondingSprintId: string;
+  correspondingProductBacklogId?: string;
 }
 
 
-export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId }) => {
+export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId, correspondingProductBacklogId }) => {
   const { sprintBacklogData, removeAllSprintBacklogState, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog } = useContext(SprintBacklogContext);
   // ドラッグ&ドロップでソート可能なリスト
   // アイテムの状態は、notStarted, inProgress, review, doneの4つ
@@ -28,17 +28,14 @@ export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId 
     // correspondingSprintIdがnoCorrespondingSprintの場合は、紐付けなしのアイテムを取得する
     // それ以外の場合は、対応スプリントに紐付けられたアイテムを取得する
     if (correspondingSprintId === 'noCorrespondingSprint') {
-      const fetchSprintBacklogs = async () => {
-        await getSprintBacklogNotCorrespondingSprintList();
-      };
-      fetchSprintBacklogs();
+      getSprintBacklogNotCorrespondingSprintList(correspondingProductBacklogId);
     } else {
-      getSprintBacklogList(correspondingSprintId);
+      getSprintBacklogList(correspondingSprintId, correspondingProductBacklogId);
     }
     return () => {
       removeAllSprintBacklogState();
     }
-  }, [correspondingSprintId]);
+  }, [correspondingSprintId, correspondingProductBacklogId]);
 
   // ドラッグの開始、移動、終了などにどのような入力を許可するかを決めるprops
   // data-dndkit-disabled-dnd-flag="true" が指定されている要素はドラッグ無効にする

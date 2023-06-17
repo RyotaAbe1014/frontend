@@ -4,8 +4,8 @@ import { AxiosError, AxiosResponse } from "axios";
 
 interface sprintBacklogAPI {
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => Promise<void>;
-  getSprintBacklogNotCorrespondingSprintList: () => Promise<SprintBacklogDTO[]>;
-  getSprintBacklogList: (sprintId: string) => Promise<SprintBacklogDTO[]>;
+  getSprintBacklogNotCorrespondingSprintList: (productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
+  getSprintBacklogList: (sprintId: string, productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
 }
 
 export const sprintBacklogAPI: sprintBacklogAPI = {
@@ -29,8 +29,13 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
         throw new Error(error.message);
       });
   },
-  getSprintBacklogNotCorrespondingSprintList: async () => {
-    return await requireTokenApi.get(`/scrum/sprint_backlog_not_corresponding_sprint_list/`)
+  getSprintBacklogNotCorrespondingSprintList: async (correspondingProductBacklogId: string | undefined) => {
+    return await requireTokenApi.get('/scrum/sprint_backlog_not_corresponding_sprint_list/',
+      {
+        params: {
+          productBacklogId: correspondingProductBacklogId ? correspondingProductBacklogId : ''
+        }
+      })
       .then((response: AxiosResponse) => {
         return response.data as SprintBacklogDTO[];
       })
@@ -40,8 +45,14 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
       });
   },
 
-  getSprintBacklogList: async (sprintId: string) => {
-    return await requireTokenApi.get(`/scrum/sprint_backlog_list/${sprintId}`)
+  getSprintBacklogList: async (sprintId: string, productBacklogId: string | undefined) => {
+    return await requireTokenApi.get('/scrum/sprint_backlog_list/',
+      {
+        params: {
+          sprintId: sprintId,
+          productBacklogId: productBacklogId ? productBacklogId : ''
+        }
+      })
       .then((response: AxiosResponse) => {
         return response.data as SprintBacklogDTO[];
       })

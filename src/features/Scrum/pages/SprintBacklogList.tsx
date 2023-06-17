@@ -4,34 +4,44 @@ import { SprintBacklogContainer } from './SprintBacklogContainer';
 import { DefaultLayout } from '../../../common/_components/_templates/DefaultLayout';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
 import { SprintBacklogContext } from '../../../services/contexts/scrum/SprintBacklogContext';
+import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductBacklogContext';
 
 
 export const SprintBacklogList: React.FC = () => {
   const { sprintData, getSprintList } = useContext(SprintContext);
-
+  const { productBacklogData, getProductBackloCorrespondingList } = useContext(ProductBacklogContext);
+  const { getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList } = useContext(SprintBacklogContext);
   // formState
   const [correspondingSprint, setCorrespondingSprint] = useState<string | undefined>(undefined);
-  const { getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList } = useContext(SprintBacklogContext);
+  const [correspondingProductBacklog, setCorrespondingProductBacklog] = useState<string | undefined>(undefined);
+
 
   useEffect(() => {
-    const fetchSprints = async () => {
-      await getSprintList();
+    const fetchSprints = () => {
+      getSprintList();
     };
     fetchSprints();
-  }, [getSprintList]);
+  }, []);
+
+  useEffect(() => {
+    const fetchProductBacklogs = () => {
+      if (!correspondingSprint) return;
+      getProductBackloCorrespondingList(correspondingSprint!);
+    };
+    fetchProductBacklogs();
+  }, [correspondingSprint]);
 
   const handleCreate = () => {
     const editTab = window.open(`/sprint-backlog-list/create/`, '_blank');
     editTab?.addEventListener('beforeunload', () => {
       window.focus();
-      // TODO: もう一回取得する?
       if (!correspondingSprint) return;
 
       if (correspondingSprint === 'noCorrespondingSprint') {
-        getSprintBacklogNotCorrespondingSprintList();
+        getSprintBacklogNotCorrespondingSprintList(correspondingProductBacklog);
       } else {
         // TODO: ここで対応スプリントのバックログを取得する
-        getSprintBacklogList(correspondingSprint);
+        getSprintBacklogList(correspondingSprint, correspondingProductBacklog);
       }
     });
   }
@@ -45,7 +55,6 @@ export const SprintBacklogList: React.FC = () => {
         <div className="mt-2">
           <div className='flex justify-between'>
             <select className="block w-full px-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-xs"
-              placeholder='対応スプリント'
               value={correspondingSprint}
               onChange={(e) => setCorrespondingSprint(e.target.value)}
             >
@@ -63,13 +72,33 @@ export const SprintBacklogList: React.FC = () => {
               アイテム作成
             </button>
           </div>
+          {correspondingSprint && (
+            <>
+              <label htmlFor="sprint-name" className="mt-2 block text-sm font-medium leading-6 text-gray-900">
+                対応プロダクトバックログ
+              </label>
+              <div className="mt-2">
+                <select className="block w-full px-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-xs"
+                  value={correspondingProductBacklog}
+                  onChange={(e) => setCorrespondingProductBacklog(e.target.value)}
+                >
+                  <option value={'noCorrespondingProductBacklog'}>紐付けなし</option>
+                  {productBacklogData && productBacklogData.length > 0 && (
+                    productBacklogData.map((productBacklog, index) => (
+                      <option key={index} value={productBacklog.productBacklogId}>{productBacklog.title}</option>
+                    ))
+                  )}
+                </select>
+              </div>
+            </>
+          )}
         </div>
       </div>
       {correspondingSprint && (
         <div className="pt-6">
-          <p className='text-xl font-bold'>プロジェクトバックログ1</p>
+          <p className='text-xl font-bold'></p>
           <div className='pt-6'>
-            <SprintBacklogContainer correspondingSprintId={correspondingSprint} />
+            <SprintBacklogContainer correspondingSprintId={correspondingSprint} correspondingProductBacklogId={correspondingProductBacklog} />
           </div>
         </div>
       )}

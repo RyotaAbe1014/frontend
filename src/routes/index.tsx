@@ -12,6 +12,7 @@ import { SprintProvider } from '../services/providers/scrum/SprintProvider';
 import { SprintBacklogEdit } from '../features/Scrum/pages/SprintBacklogEdit';
 import { SprintBacklogCreate } from '../features/Scrum/pages/SprintBacklogCreate';
 import { SprintBacklogProvider } from '../services/providers/scrum/SprintBacklog';
+import { ProductBacklogProvider } from '../services/providers/scrum/ProductBacklog';
 
 
 const AppRoutes: React.FC = () => {
@@ -25,7 +26,7 @@ const AppRoutes: React.FC = () => {
         {/* scrum */}
         <Route path='/sprint-list' element={<AuthRoute><SprintList /></AuthRoute>} />
         <Route path='/product-backlog-list' element={<AuthRoute><ProductBacklogList /></AuthRoute>} />
-        <Route path='/sprint-backlog-list' element={<AuthRoute><SprintProvider><SprintBacklogProvider><SprintBacklogList /></SprintBacklogProvider></SprintProvider></AuthRoute>} />
+        <Route path='/sprint-backlog-list' element={<AuthRoute><SprintProvider><ProductBacklogProvider><SprintBacklogProvider><SprintBacklogList /></SprintBacklogProvider></ProductBacklogProvider></SprintProvider></AuthRoute>} />
         <Route path='/sprint-backlog-list/create' element={<AuthRoute><SprintBacklogCreate /></AuthRoute>} />
         <Route path='/sprint-backlog-list/edit/:sprintBacklogId' element={<AuthRoute><SprintBacklogEdit /></AuthRoute>} />
         {/* user */}

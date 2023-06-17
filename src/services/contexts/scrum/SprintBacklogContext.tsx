@@ -9,8 +9,8 @@ type SprintBacklogContextType = {
   sprintBacklogData: { [key: string]: SprintBacklogDTO[]; };
   removeAllSprintBacklogState: () => void;
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => Promise<void>;
-  getSprintBacklogNotCorrespondingSprintList: () => Promise<void>;
-  getSprintBacklogList: (sprintId: string) => Promise<void>;
+  getSprintBacklogNotCorrespondingSprintList: (correspondingProductBacklogId: string | undefined) => Promise<void>;
+  getSprintBacklogList: (sprintId: string, correspondingProductBacklogId: string | undefined) => Promise<void>;
   handleDragOver: (event: DragOverEvent) => void;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
