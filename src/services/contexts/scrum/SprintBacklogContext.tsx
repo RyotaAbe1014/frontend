@@ -8,9 +8,10 @@ type SprintBacklogContextType = {
   isCreated: boolean;
   sprintBacklogData: { [key: string]: SprintBacklogDTO[]; };
   removeAllSprintBacklogState: () => void;
-  createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => Promise<void>;
+  createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklogList: (sprintId: string, correspondingProductBacklogId: string | undefined) => Promise<void>;
+  getSprintBacklog: (id: string) => Promise<void>;
   handleDragOver: (event: DragOverEvent) => void;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
@@ -27,6 +28,7 @@ export const SprintBacklogContext = React.createContext<SprintBacklogContextType
   createSprintBacklog: async () => { },
   getSprintBacklogNotCorrespondingSprintList: async () => { },
   getSprintBacklogList: async () => { },
+  getSprintBacklog: async () => { },
   handleDragOver: () => { },
   handleDragStart: () => { },
   handleDragEnd: () => { },

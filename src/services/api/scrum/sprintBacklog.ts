@@ -3,13 +3,14 @@ import { requireTokenApi } from "../common/requireTokenApi";
 import { AxiosError, AxiosResponse } from "axios";
 
 interface sprintBacklogAPI {
-  createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => Promise<void>;
+  createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined,  description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
   getSprintBacklogList: (sprintId: string, productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
+  getSprintBacklog: (sprintBacklogId: string) => Promise<SprintBacklogDTO>;
 }
 
 export const sprintBacklogAPI: sprintBacklogAPI = {
-  createSprintBacklog: async (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => {
+  createSprintBacklog: async (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined,  description: string | undefined) => {
     return await requireTokenApi.post(`/scrum/sprint_backlog/create/`,
       {
         title: title,
@@ -67,4 +68,20 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
         throw new Error(error.message);
       });
   },
+
+  getSprintBacklog: async (sprintBacklogId: string) => {
+    const params = new URLSearchParams();
+    params.append('sprint_backlog_id', sprintBacklogId);
+
+    return await requireTokenApi.get('/scrum/sprint_backlog/', {
+      params: params
+    })
+      .then((response: AxiosResponse) => {
+        return response.data as SprintBacklogDTO;
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+  }
 };

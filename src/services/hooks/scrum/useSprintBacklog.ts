@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { sprintBacklogAPI } from '../../api/scrum/sprintBacklog';
 import { SprintBacklogDTO } from '../../../types/scrum/sprintBacklog';
-import { DragEndEvent, DragOverEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
+import { DragEndEvent, DragOverEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'; 
 
 
 type useSprintBacklog = {
@@ -11,9 +10,10 @@ type useSprintBacklog = {
   isCreated: boolean;
   sprintBacklogData: { [key: string]: SprintBacklogDTO[]; };
   removeAllSprintBacklogState: () => void;
-  createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => Promise<void>;
+  createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklogList: (sprintId: string, correspondingProductBacklogId: string | undefined) => Promise<void>;
+  getSprintBacklog: (id: string) => Promise<void>;
   handleDragOver: (event: DragOverEvent) => void;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
@@ -34,8 +34,7 @@ export const useSprintBacklog = (): useSprintBacklog => {
   const [activeId, setActiveId] = useState<UniqueIdentifier>();
   const [sprintBacklog, setSprintBacklog] = useState<SprintBacklogDTO | undefined>(undefined);
 
-
-  const createSprintBacklog = useCallback(async (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string) => {
+  const createSprintBacklog = useCallback(async (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => {
     try {
       setLoading(true);
       setErrorMessage(undefined);
@@ -83,7 +82,6 @@ export const useSprintBacklog = (): useSprintBacklog => {
     try {
       setLoading(true);
       setErrorMessage(undefined);
-      // TODO: ここでAPIを叩く
       const response: SprintBacklogDTO[] = await sprintBacklogAPI.getSprintBacklogList(sprintId, productBacklogId);
 
       // 整形する際はforeachで回して、sprintBacklogのstatusの値を確認し、それぞれの配列に振り分ける
@@ -101,6 +99,20 @@ export const useSprintBacklog = (): useSprintBacklog => {
           setSprintBacklogData(prevData => ({ notStarted: prevData.notStarted, inProgress: prevData.inProgress, review: prevData.review, done: [...prevData.done, sprintBacklog] }));
         }
       });
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // スプリントバックログ取得
+  const getSprintBacklog = useCallback(async (sprintBacklogId: string) => {
+    try {
+      setLoading(true);
+      setErrorMessage(undefined);
+      const response: SprintBacklogDTO = await sprintBacklogAPI.getSprintBacklog(sprintBacklogId);
+      setSprintBacklog(response);
     } catch (error: any) {
       setErrorMessage(error.message);
     } finally {
@@ -251,5 +263,5 @@ export const useSprintBacklog = (): useSprintBacklog => {
     setActiveId(undefined);
   };
 
-  return { loading, errorMessage, isCreated, sprintBacklogData, removeAllSprintBacklogState, createSprintBacklog, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog };
+  return { loading, errorMessage, isCreated, sprintBacklogData, removeAllSprintBacklogState, createSprintBacklog, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, getSprintBacklog, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog };
 };

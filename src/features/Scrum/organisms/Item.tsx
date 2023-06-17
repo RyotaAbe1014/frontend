@@ -1,7 +1,4 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { useState } from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-
 import { SprintBacklogDTO } from "../../../types/scrum/sprintBacklog";
 
 
@@ -17,7 +14,6 @@ const Item: React.FC<Props> = ({ item }) => {
     const editTab = window.open(`/sprint-backlog-list/edit/${item?.sprintBacklogId}`, '_blank');
     editTab?.addEventListener('beforeunload', () => {
       window.focus();
-      
     });
   }
   return (

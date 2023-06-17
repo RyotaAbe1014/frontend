@@ -8,14 +8,15 @@ import { SprintBacklogContext } from '../../../services/contexts/scrum/SprintBac
 
 interface Props {
   isCreate: boolean;
+  sprintBacklogId?: string;
 }
 
 export const SprintBacklogEditor: React.FC<Props> = (props) => {
-  const { isCreate } = props;
+  const { isCreate, sprintBacklogId } = props;
   const { sprintData, getSprintList } = useContext(SprintContext);
   const { userData, getUserList } = useContext(UserContext);
   const { productBacklogData, getProductBacklogList } = useContext(ProductBacklogContext);
-  const { createSprintBacklog, isCreated } = useContext(SprintBacklogContext);
+  const { createSprintBacklog, isCreated, sprintBacklog, getSprintBacklog } = useContext(SprintBacklogContext);
 
   const [title, setTitle] = useState<string>('');
   const [correspondingProductBacklog, setCorrespondingProductBacklog] = useState<string | undefined>(undefined);
@@ -23,12 +24,16 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
   const [status, setStatus] = useState<number>(0);
   const [priority, setPriority] = useState<number>(0);
   const [assignee, setAssignee] = useState<string | undefined>(undefined);
-  const [description, setDescription] = useState<string>('');
+  const [description, setDescription] = useState<string | undefined>('');
 
   useEffect(() => {
     getSprintList();
     getUserList();
     getProductBacklogList();
+
+    if (!isCreate) {
+      getSprintBacklog(sprintBacklogId as string);
+    }
   }, []);
 
   useEffect(() => {
@@ -36,6 +41,18 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
       window.close();
     }
   }, [isCreated]);
+
+  useEffect(() => {
+    if (!isCreate && sprintBacklog) {
+      setTitle(sprintBacklog.title);
+      setCorrespondingProductBacklog(sprintBacklog.productBacklogId);
+      setCorrespondingSprint(sprintBacklog.sprintId);
+      setStatus(sprintBacklog.status);
+      setPriority(sprintBacklog.priority);
+      setAssignee(sprintBacklog.assignee);
+      setDescription(sprintBacklog.description);
+    }
+  }, [sprintBacklog]);
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (isCreate) {

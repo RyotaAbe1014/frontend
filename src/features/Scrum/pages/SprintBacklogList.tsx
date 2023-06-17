@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { SprintBacklogContainer } from './SprintBacklogContainer';
+import { SprintBacklogContainer } from '../organisms/SprintBacklogContainer';
 import { DefaultLayout } from '../../../common/_components/_templates/DefaultLayout';
 import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
 import { SprintBacklogContext } from '../../../services/contexts/scrum/SprintBacklogContext';
