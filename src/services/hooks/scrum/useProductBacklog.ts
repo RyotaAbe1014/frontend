@@ -8,7 +8,7 @@ type useProductBacklog = {
   productBacklogData: ProductBacklogType[] | undefined;
   createProductBacklog: (title: string, description: string, sprintId: string | undefined) => Promise<void>;
   getProductBacklogList: () => Promise<void>;
-  getProductBackloCorrespondingList: (sprintId: string) => Promise<void>;
+  getProductBacklogCorrespondingList: (sprintId: string) => Promise<void>;
   deleteProductBacklog: (id: string) => Promise<void>;
   updateProductBacklog: (id: string, title: string, description: string, progress: number, sprintId: string | undefined) => Promise<void>;
 }
@@ -33,11 +33,11 @@ export const useProductBacklog = (): useProductBacklog => {
   }, []);
 
   // バックログアイテム一覧取得処理
-  const getProductBackloCorrespondingList = useCallback(async (sprintId: string) => {
+  const getProductBacklogCorrespondingList = useCallback(async (sprintId: string) => {
     try {
       setLoading(true);
       setErrorMessage(undefined);
-      const response: ProductBacklogType[] = await productBacklogAPI.getProductBackloCorrespondingList(sprintId);
+      const response: ProductBacklogType[] = await productBacklogAPI.getProductBacklogCorrespondingList(sprintId);
       setProductBacklogData(response);
     } catch (error: any) {
       setErrorMessage(error.message);
@@ -88,5 +88,5 @@ export const useProductBacklog = (): useProductBacklog => {
     }
   }, [getProductBacklogList]);
 
-  return { loading, errorMessage, createProductBacklog, productBacklogData, getProductBacklogList, getProductBackloCorrespondingList, deleteProductBacklog, updateProductBacklog };
+  return { loading, errorMessage, createProductBacklog, productBacklogData, getProductBacklogList, getProductBacklogCorrespondingList, deleteProductBacklog, updateProductBacklog };
 };

@@ -6,7 +6,7 @@ import { ProductBacklog } from './../../../types/scrum/productBacklog';
 interface productBacklogAPI {
   createProductBacklog: (title: string, description: string, sprintId: string | undefined) => Promise<void>;
   getProductBacklogList: () => Promise<ProductBacklog[]>;
-  getProductBackloCorrespondingList: (sprintId: string) => Promise<ProductBacklog[]>;
+  getProductBacklogCorrespondingList: (sprintId: string) => Promise<ProductBacklog[]>;
   deleteProductBacklog: (id: string) => Promise<void>;
   updateProductBacklog: (id: string, title: string, description: string, progress: number, sprintId: string | undefined) => Promise<void>;
 }
@@ -39,11 +39,11 @@ export const productBacklogAPI: productBacklogAPI = {
       });
   },
 
-  getProductBackloCorrespondingList: async (sprintId: string) => {
+  getProductBacklogCorrespondingList: async (sprintId: string) => {
     // sprintIdはクエリパラメータで渡す
     return await requireTokenApi.get('/scrum/product_backlog_list/', {
       params: {
-        sprintId: sprintId
+        sprint_id: (sprintId === 'noCorrespondingSprint') ? undefined : sprintId
       }
     })
       .then((response: AxiosResponse) => {

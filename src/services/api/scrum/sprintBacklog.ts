@@ -30,11 +30,13 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
       });
   },
   getSprintBacklogNotCorrespondingSprintList: async (correspondingProductBacklogId: string | undefined) => {
+    const params = new URLSearchParams();
+    if (correspondingProductBacklogId && correspondingProductBacklogId !== 'noCorrespondingSprint') {
+      params.append('product_backlog_id', correspondingProductBacklogId);
+    }
     return await requireTokenApi.get('/scrum/sprint_backlog_not_corresponding_sprint_list/',
       {
-        params: {
-          productBacklogId: correspondingProductBacklogId ? correspondingProductBacklogId : ''
-        }
+        params: params
       })
       .then((response: AxiosResponse) => {
         return response.data as SprintBacklogDTO[];
@@ -46,13 +48,17 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
   },
 
   getSprintBacklogList: async (sprintId: string, productBacklogId: string | undefined) => {
-    return await requireTokenApi.get('/scrum/sprint_backlog_list/',
-      {
-        params: {
-          sprintId: sprintId,
-          productBacklogId: productBacklogId ? productBacklogId : ''
-        }
-      })
+    console.log('sprintId: ' + sprintId);
+    console.log('productBacklogId: ' + productBacklogId);
+    const params = new URLSearchParams();
+    params.append('sprint_id', sprintId);
+    if (productBacklogId && productBacklogId !== 'noCorrespondingSprint') {
+      params.append('product_backlog_id', productBacklogId);
+    }
+
+    return await requireTokenApi.get('/scrum/sprint_backlog_list/', {
+      params: params
+    })
       .then((response: AxiosResponse) => {
         return response.data as SprintBacklogDTO[];
       })

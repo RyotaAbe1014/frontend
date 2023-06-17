@@ -9,7 +9,7 @@ import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductB
 
 export const SprintBacklogList: React.FC = () => {
   const { sprintData, getSprintList } = useContext(SprintContext);
-  const { productBacklogData, getProductBackloCorrespondingList } = useContext(ProductBacklogContext);
+  const { productBacklogData, getProductBacklogCorrespondingList } = useContext(ProductBacklogContext);
   const { getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList } = useContext(SprintBacklogContext);
   // formState
   const [correspondingSprint, setCorrespondingSprint] = useState<string | undefined>(undefined);
@@ -25,8 +25,7 @@ export const SprintBacklogList: React.FC = () => {
 
   useEffect(() => {
     const fetchProductBacklogs = () => {
-      if (!correspondingSprint) return;
-      getProductBackloCorrespondingList(correspondingSprint!);
+      getProductBacklogCorrespondingList(correspondingSprint!);
     };
     fetchProductBacklogs();
   }, [correspondingSprint]);
@@ -81,8 +80,9 @@ export const SprintBacklogList: React.FC = () => {
                 <select className="block w-full px-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-xs"
                   value={correspondingProductBacklog}
                   onChange={(e) => setCorrespondingProductBacklog(e.target.value)}
-                >
-                  <option value={'noCorrespondingProductBacklog'}>紐付けなし</option>
+                  >
+                  <option value={undefined}></option>
+                  <option value={'noCorrespondingSprint'}>紐付けなし</option>
                   {productBacklogData && productBacklogData.length > 0 && (
                     productBacklogData.map((productBacklog, index) => (
                       <option key={index} value={productBacklog.productBacklogId}>{productBacklog.title}</option>
