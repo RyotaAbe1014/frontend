@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { sprintBacklogAPI } from '../../api/scrum/sprintBacklog';
 import { SprintBacklogDTO } from '../../../types/scrum/sprintBacklog';
-import { DragEndEvent, DragOverEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'; 
+import { DragEndEvent, DragOverEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core';
 
 
 type useSprintBacklog = {
@@ -129,6 +129,19 @@ export const useSprintBacklog = (): useSprintBacklog => {
     });
   }, []);
 
+  // スプリントバックログステータス更新
+  const updateSprintBacklogStatus = useCallback(async (sprintBacklogId: string, status: number) => {
+    try {
+      setLoading(true);
+      setErrorMessage(undefined);
+      await sprintBacklogAPI.updateSprintBacklogStatus(sprintBacklogId, status);
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   //各コンテナ取得関数
   const findContainer = (id: UniqueIdentifier) => {
     if (id in sprintBacklogData) {
@@ -163,6 +176,7 @@ export const useSprintBacklog = (): useSprintBacklog => {
     }
 
     setSprintBacklogData((prev) => {
+      console.log(prev);
       // 移動元のコンテナの要素配列を取得
       const activeItems = prev[activeContainer];
       // 移動先のコンテナの要素配列を取得
@@ -196,6 +210,26 @@ export const useSprintBacklog = (): useSprintBacklog => {
         ],
       };
     });
+
+    let status;
+    if (overContainer === 'notStarted') {
+      status = 0;
+    }
+    else if (overContainer === 'inProgress') {
+      status = 1;
+    }
+    else if (overContainer === 'review') {
+      status = 2;
+    }
+    else if (overContainer === 'done') {
+      status = 3;
+    }
+    else {
+      throw new Error('invalid container');
+    }
+    if (sprintBacklog) {
+      updateSprintBacklogStatus(sprintBacklog.sprintBacklogId as string, status);
+    }
   };
 
   // ドラッグ開始時に発火する関数

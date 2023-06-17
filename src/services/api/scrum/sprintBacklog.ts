@@ -3,14 +3,15 @@ import { requireTokenApi } from "../common/requireTokenApi";
 import { AxiosError, AxiosResponse } from "axios";
 
 interface sprintBacklogAPI {
-  createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined,  description: string | undefined) => Promise<void>;
+  createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
   getSprintBacklogList: (sprintId: string, productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
   getSprintBacklog: (sprintBacklogId: string) => Promise<SprintBacklogDTO>;
+  updateSprintBacklogStatus: (sprintBacklogId: string, status: number) => Promise<void>;
 }
 
 export const sprintBacklogAPI: sprintBacklogAPI = {
-  createSprintBacklog: async (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined,  description: string | undefined) => {
+  createSprintBacklog: async (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => {
     return await requireTokenApi.post(`/scrum/sprint_backlog/create/`,
       {
         title: title,
@@ -78,6 +79,20 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
     })
       .then((response: AxiosResponse) => {
         return response.data as SprintBacklogDTO;
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+  },
+  updateSprintBacklogStatus: async (sprintBacklogId: string, status: number) => {
+    return await requireTokenApi.put(`/scrum/sprint_backlog/update_status/${sprintBacklogId}/`,
+      {
+        status: status
+      }
+    )
+      .then((response: AxiosResponse) => {
+        return response.data;
       })
       .catch((error: AxiosError) => {
         console.log(error);
