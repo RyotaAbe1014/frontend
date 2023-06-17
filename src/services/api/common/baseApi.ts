@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 
 
 export const baseAPI: AxiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api/v1/",
+  baseURL: process.env.REACT_APP_API_ENDPOINT,
   headers: {
     'Content-Type': 'application/json',
   },

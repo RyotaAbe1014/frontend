@@ -5,7 +5,7 @@ import { baseAPI } from "./baseApi";
 
 // Create an axios instance
 const requireTokenApi: AxiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api/v1/",
+  baseURL: process.env.REACT_APP_API_ENDPOINT,
   headers: {
     'Content-Type': 'application/json',
   },
