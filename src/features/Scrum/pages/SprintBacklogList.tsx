@@ -10,7 +10,7 @@ import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductB
 export const SprintBacklogList: React.FC = () => {
   const { sprintData, getSprintList } = useContext(SprintContext);
   const { productBacklogData, getProductBacklogCorrespondingList } = useContext(ProductBacklogContext);
-  const { getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList } = useContext(SprintBacklogContext);
+  const { getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, removeAllSprintBacklogState } = useContext(SprintBacklogContext);
   // formState
   const [correspondingSprint, setCorrespondingSprint] = useState<string | undefined>(undefined);
   const [correspondingProductBacklog, setCorrespondingProductBacklog] = useState<string | undefined>(undefined);
@@ -35,7 +35,7 @@ export const SprintBacklogList: React.FC = () => {
     editTab?.addEventListener('beforeunload', () => {
       window.focus();
       if (!correspondingSprint) return;
-
+      removeAllSprintBacklogState();
       if (correspondingSprint === 'noCorrespondingSprint') {
         getSprintBacklogNotCorrespondingSprintList(correspondingProductBacklog);
       } else {
