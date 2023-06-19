@@ -10,10 +10,12 @@ const SortableContainer = ({
   id,
   items,
   label,
+  handleEdit,
 }: {
   id: string;
   items: SprintBacklogDTO[];
   label: string;
+  handleEdit: (sprintBacklogId: string) => void;
 }) => {
   const { setNodeRef } = useDroppable({
     id,
@@ -27,7 +29,7 @@ const SortableContainer = ({
           className="w-full border-2 p-5 mt-2 rounded-md shadow-md bg-white max-h-screen overflow-x-scroll"
         >
           {items.map((item: SprintBacklogDTO) => (
-            <SortableItem key={item.sprintBacklogId} id={item.sprintBacklogId} item={item}/>
+            <SortableItem key={item.sprintBacklogId} id={item.sprintBacklogId} item={item} handleEdit={handleEdit}/>
           ))}
         </div>
       </SortableContext>

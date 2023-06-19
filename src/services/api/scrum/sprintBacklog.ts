@@ -8,6 +8,7 @@ interface sprintBacklogAPI {
   getSprintBacklogList: (sprintId: string, productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
   getSprintBacklog: (sprintBacklogId: string) => Promise<SprintBacklogDTO>;
   updateSprintBacklogStatus: (sprintBacklogId: string, status: number) => Promise<void>;
+  deleteSprintBacklog: (sprintBacklogId: string) => Promise<void>;
 }
 
 export const sprintBacklogAPI: sprintBacklogAPI = {
@@ -50,8 +51,6 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
   },
 
   getSprintBacklogList: async (sprintId: string, productBacklogId: string | undefined) => {
-    console.log('sprintId: ' + sprintId);
-    console.log('productBacklogId: ' + productBacklogId);
     const params = new URLSearchParams();
     params.append('sprint_id', sprintId);
     if (productBacklogId && productBacklogId !== 'noCorrespondingSprint') {
@@ -91,6 +90,16 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
         status: status
       }
     )
+      .then((response: AxiosResponse) => {
+        return response.data;
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+  },
+  deleteSprintBacklog: async (sprintBacklogId: string) => {
+    return await requireTokenApi.delete(`/scrum/sprint_backlog/delete/${sprintBacklogId}/`)
       .then((response: AxiosResponse) => {
         return response.data;
       })

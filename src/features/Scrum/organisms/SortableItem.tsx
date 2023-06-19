@@ -8,9 +8,10 @@ import { SprintBacklog, SprintBacklogDTO } from "../../../types/scrum/sprintBack
 interface Props {
   id: UniqueIdentifier;
   item: SprintBacklogDTO;
+  handleEdit: (sprintBacklogId: string) => void;
 }
 
-const SortableItem: React.FC<Props> = ({ id, item }) => {
+const SortableItem: React.FC<Props> = ({ id, item, handleEdit }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   return (
@@ -20,7 +21,7 @@ const SortableItem: React.FC<Props> = ({ id, item }) => {
       {...attributes}
       {...listeners}
     >
-      <Item id={id} item={item} />
+      <Item id={id} item={item} handleEdit={handleEdit}/>
     </div>
   );
 };

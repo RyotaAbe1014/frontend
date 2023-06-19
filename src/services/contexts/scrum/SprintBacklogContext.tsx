@@ -6,12 +6,14 @@ type SprintBacklogContextType = {
   loading: boolean;
   errorMessage: string | undefined;
   isCreated: boolean;
+  isDeleted: boolean;
   sprintBacklogData: { [key: string]: SprintBacklogDTO[]; };
   removeAllSprintBacklogState: () => void;
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklogList: (sprintId: string, correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklog: (id: string) => Promise<void>;
+  deleteSprintBacklog: (id: string) => Promise<void>;
   handleDragOver: (event: DragOverEvent) => void;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
@@ -23,12 +25,14 @@ export const SprintBacklogContext = React.createContext<SprintBacklogContextType
   loading: false,
   errorMessage: undefined,
   isCreated: false,
+  isDeleted: false,
   sprintBacklogData: {},
   removeAllSprintBacklogState: () => { },
   createSprintBacklog: async () => { },
   getSprintBacklogNotCorrespondingSprintList: async () => { },
   getSprintBacklogList: async () => { },
   getSprintBacklog: async () => { },
+  deleteSprintBacklog: async () => { },
   handleDragOver: () => { },
   handleDragStart: () => { },
   handleDragEnd: () => { },

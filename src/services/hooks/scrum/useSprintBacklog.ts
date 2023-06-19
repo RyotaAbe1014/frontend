@@ -8,12 +8,14 @@ type useSprintBacklog = {
   loading: boolean;
   errorMessage: string | undefined;
   isCreated: boolean;
+  isDeleted: boolean;
   sprintBacklogData: { [key: string]: SprintBacklogDTO[]; };
   removeAllSprintBacklogState: () => void;
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklogList: (sprintId: string, correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklog: (id: string) => Promise<void>;
+  deleteSprintBacklog: (id: string) => Promise<void>;
   handleDragOver: (event: DragOverEvent) => void;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
@@ -24,6 +26,7 @@ export const useSprintBacklog = (): useSprintBacklog => {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const [isCreated, setIsCreated] = useState<boolean>(false);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [sprintBacklogData, setSprintBacklogData] = useState<{ [key: string]: SprintBacklogDTO[]; }>({
     notStarted: [],
     inProgress: [],
@@ -120,6 +123,19 @@ export const useSprintBacklog = (): useSprintBacklog => {
     }
   }, []);
 
+  const deleteSprintBacklog = useCallback(async (sprintBacklogId: string) => {
+    try {
+      setLoading(true);
+      setErrorMessage(undefined);
+      await sprintBacklogAPI.deleteSprintBacklog(sprintBacklogId);
+      setIsDeleted(true);
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const removeAllSprintBacklogState = useCallback(() => {
     setSprintBacklogData({
       notStarted: [],
@@ -176,7 +192,6 @@ export const useSprintBacklog = (): useSprintBacklog => {
     }
 
     setSprintBacklogData((prev) => {
-      console.log(prev);
       // 移動元のコンテナの要素配列を取得
       const activeItems = prev[activeContainer];
       // 移動先のコンテナの要素配列を取得
@@ -297,5 +312,5 @@ export const useSprintBacklog = (): useSprintBacklog => {
     setActiveId(undefined);
   };
 
-  return { loading, errorMessage, isCreated, sprintBacklogData, removeAllSprintBacklogState, createSprintBacklog, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, getSprintBacklog, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog };
+  return { loading, errorMessage, isCreated, isDeleted, sprintBacklogData, removeAllSprintBacklogState, createSprintBacklog, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, getSprintBacklog, deleteSprintBacklog, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog };
 };

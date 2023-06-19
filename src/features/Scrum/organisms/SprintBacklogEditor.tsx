@@ -4,6 +4,7 @@ import { SprintContext } from '../../../services/contexts/scrum/SprintContext';
 import { UserContext } from '../../../services/contexts/user/UserContext';
 import { ProductBacklogContext } from '../../../services/contexts/scrum/ProductBacklogContext';
 import { SprintBacklogContext } from '../../../services/contexts/scrum/SprintBacklogContext';
+import { SprintBacklogDeleteModal } from './SprintBacklogDeleteModal';
 
 
 interface Props {
@@ -16,7 +17,7 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
   const { sprintData, getSprintList } = useContext(SprintContext);
   const { userData, getUserList } = useContext(UserContext);
   const { productBacklogData, getProductBacklogList } = useContext(ProductBacklogContext);
-  const { createSprintBacklog, isCreated, sprintBacklog, getSprintBacklog } = useContext(SprintBacklogContext);
+  const { createSprintBacklog, isCreated, isDeleted, sprintBacklog, getSprintBacklog, deleteSprintBacklog } = useContext(SprintBacklogContext);
 
   const [title, setTitle] = useState<string>('');
   const [correspondingProductBacklog, setCorrespondingProductBacklog] = useState<string | undefined>(undefined);
@@ -25,6 +26,9 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
   const [priority, setPriority] = useState<number>(0);
   const [assignee, setAssignee] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState<string | undefined>('');
+
+  // modal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getSprintList();
@@ -37,10 +41,10 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
   }, []);
 
   useEffect(() => {
-    if (isCreated) {
+    if (isCreated || isDeleted) {
       window.close();
     }
-  }, [isCreated]);
+  }, [isCreated, isDeleted]);
 
   useEffect(() => {
     if (!isCreate && sprintBacklog) {
@@ -62,8 +66,18 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
     }
   };
 
+  const handleDelete = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const deleteSprintBacklogSubmit = (sprintBacklogId: string) => {
+    deleteSprintBacklog(sprintBacklogId);
+  }
   return (
     <>
+      {isCreate ? null : (
+        <SprintBacklogDeleteModal isOpen={isDeleteModalOpen} setIsOpen={setIsDeleteModalOpen} sprintBacklogId={sprintBacklogId as string} deleteSprintBacklog={deleteSprintBacklogSubmit} />
+      )}
       <h1 className='text-3xl font-bold pt-4'>{isCreate ? 'スプリントバックログ作成' : 'スプリントバックログ編集'}</h1>
       <div className='flex justify-end mt-1'>
         <button className='text-white px-4 py-2 rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500'
@@ -79,6 +93,13 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
           >
             {isCreate ? '作成' : '更新'}
           </button>
+          {!isCreate && (
+            <button className='text-white px-4 py-2 rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-red-600 hover:bg-red-500 ml-2'
+              onClick={() => { handleDelete() }}
+            >
+              削除
+            </button>
+          )}
         </div>
         <div className='grid grid-cols-2 gap-4'>
           <div className='col-span-2'>

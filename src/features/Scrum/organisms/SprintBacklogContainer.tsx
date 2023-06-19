@@ -16,10 +16,11 @@ import { SprintBacklogContext } from "../../../services/contexts/scrum/SprintBac
 interface Props {
   correspondingSprintId: string;
   correspondingProductBacklogId?: string;
+  handleEdit: (sprintBacklogId: string) => void;
 }
 
 
-export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId, correspondingProductBacklogId }) => {
+export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId, correspondingProductBacklogId, handleEdit }) => {
   const { sprintBacklogData, removeAllSprintBacklogState, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog } = useContext(SprintBacklogContext);
   // ドラッグ&ドロップでソート可能なリスト
   // アイテムの状態は、notStarted, inProgress, review, doneの4つ
@@ -93,24 +94,28 @@ export const SprintBacklogContainer: React.FC<Props> = ({ correspondingSprintId,
           id="notStarted"
           items={sprintBacklogData.notStarted}
           label="notStarted"
+          handleEdit={handleEdit}
         />
         <SortableContainer
           id="inProgress"
           label="inProgress"
           items={sprintBacklogData.inProgress}
+          handleEdit={handleEdit}
         />
         <SortableContainer
           id="review"
           label="review"
           items={sprintBacklogData.review}
+          handleEdit={handleEdit}
         />
         <SortableContainer
           id="done"
           label="done"
           items={sprintBacklogData.done}
+          handleEdit={handleEdit}
         />
         {/* DragOverlay */}
-        <DragOverlay>{activeId ? <Item id={activeId} item={sprintBacklog} /> : null}</DragOverlay>
+        <DragOverlay>{activeId ? <Item id={activeId} item={sprintBacklog} handleEdit={handleEdit} /> : null}</DragOverlay>
       </DndContext>
     </div>
   );

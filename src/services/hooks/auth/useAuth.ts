@@ -81,7 +81,6 @@ export const useAuth = (): Auth => {
       }
       return true;
     }
-    console.log(access)
     return false;
   }, []);
 

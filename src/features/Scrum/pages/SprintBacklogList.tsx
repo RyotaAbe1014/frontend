@@ -43,6 +43,21 @@ export const SprintBacklogList: React.FC = () => {
         getSprintBacklogList(correspondingSprint, correspondingProductBacklog);
       }
     });
+  };
+
+  const handleEdit = (sprintBacklogId: string) => {
+    const editTab = window.open(`/sprint-backlog-list/edit/${sprintBacklogId}`, '_blank');
+    editTab?.addEventListener('beforeunload', () => {
+      window.focus();
+      if (!correspondingSprint) return;
+      removeAllSprintBacklogState();
+      if (correspondingSprint === 'noCorrespondingSprint') {
+        getSprintBacklogNotCorrespondingSprintList(correspondingProductBacklog);
+      } else {
+        // TODO: ここで対応スプリントのバックログを取得する
+        getSprintBacklogList(correspondingSprint, correspondingProductBacklog);
+      }
+    });
   }
 
   return (
@@ -80,7 +95,7 @@ export const SprintBacklogList: React.FC = () => {
                 <select className="block w-full px-4 py-2 border rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-xs"
                   value={correspondingProductBacklog}
                   onChange={(e) => setCorrespondingProductBacklog(e.target.value)}
-                  >
+                >
                   <option value={undefined}></option>
                   <option value={'noCorrespondingSprint'}>紐付けなし</option>
                   {productBacklogData && productBacklogData.length > 0 && (
@@ -98,7 +113,7 @@ export const SprintBacklogList: React.FC = () => {
         <div className="pt-6">
           <p className='text-xl font-bold'></p>
           <div className='pt-6'>
-            <SprintBacklogContainer correspondingSprintId={correspondingSprint} correspondingProductBacklogId={correspondingProductBacklog} />
+            <SprintBacklogContainer correspondingSprintId={correspondingSprint} correspondingProductBacklogId={correspondingProductBacklog} handleEdit={handleEdit}/>
           </div>
         </div>
       )}
