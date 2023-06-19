@@ -5,6 +5,7 @@ import { AxiosError, AxiosResponse } from "axios";
 interface sprintBacklogAPI {
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
+  updateSprintBacklog: (sprintBacklogId: string, title: string, sprinttId: string | undefined, productBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogList: (sprintId: string, productBacklogId: string | undefined) => Promise<SprintBacklogDTO[]>;
   getSprintBacklog: (sprintBacklogId: string) => Promise<SprintBacklogDTO>;
   updateSprintBacklogStatus: (sprintBacklogId: string, status: number) => Promise<void>;
@@ -32,6 +33,28 @@ export const sprintBacklogAPI: sprintBacklogAPI = {
         throw new Error(error.message);
       });
   },
+
+  updateSprintBacklog: async (sprintBacklogId: string, title: string, sprinttId: string | undefined, productBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => {
+    return await requireTokenApi.put(`/scrum/sprint_backlog/update/${sprintBacklogId}/`,
+      {
+        title: title,
+        sprintId: sprinttId,
+        productBacklogId: productBacklogId,
+        status: status,
+        priority: priority,
+        assignee: assignee,
+        description: description
+      }
+    )
+      .then((response: AxiosResponse) => {
+        return response.data;
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+  },
+
   getSprintBacklogNotCorrespondingSprintList: async (correspondingProductBacklogId: string | undefined) => {
     const params = new URLSearchParams();
     if (correspondingProductBacklogId && correspondingProductBacklogId !== 'noCorrespondingSprint') {

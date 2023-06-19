@@ -10,6 +10,7 @@ type SprintBacklogContextType = {
   sprintBacklogData: { [key: string]: SprintBacklogDTO[]; };
   removeAllSprintBacklogState: () => void;
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
+  updateSprintBacklog: (id: string, title: string, sprinttId: string | undefined, productBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklogList: (sprintId: string, correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklog: (id: string) => Promise<void>;
@@ -29,6 +30,7 @@ export const SprintBacklogContext = React.createContext<SprintBacklogContextType
   sprintBacklogData: {},
   removeAllSprintBacklogState: () => { },
   createSprintBacklog: async () => { },
+  updateSprintBacklog: async () => { },
   getSprintBacklogNotCorrespondingSprintList: async () => { },
   getSprintBacklogList: async () => { },
   getSprintBacklog: async () => { },

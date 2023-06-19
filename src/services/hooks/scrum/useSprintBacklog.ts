@@ -12,6 +12,7 @@ type useSprintBacklog = {
   sprintBacklogData: { [key: string]: SprintBacklogDTO[]; };
   removeAllSprintBacklogState: () => void;
   createSprintBacklog: (title: string, correspondingSprintId: string | undefined, correspondingProductBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
+  updateSprintBacklog: (id: string, title: string, sprinttId: string | undefined, productBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => Promise<void>;
   getSprintBacklogNotCorrespondingSprintList: (correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklogList: (sprintId: string, correspondingProductBacklogId: string | undefined) => Promise<void>;
   getSprintBacklog: (id: string) => Promise<void>;
@@ -42,6 +43,20 @@ export const useSprintBacklog = (): useSprintBacklog => {
       setLoading(true);
       setErrorMessage(undefined);
       await sprintBacklogAPI.createSprintBacklog(title, correspondingSprintId, correspondingProductBacklogId, status, priority, assignee, description);
+      setIsCreated(true);
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // スプリントバックログを更新
+  const updateSprintBacklog = useCallback(async (id: string, title: string, sprinttId: string | undefined, productBacklogId: string | undefined, status: number, priority: number, assignee: string | undefined, description: string | undefined) => {
+    try {
+      setLoading(true);
+      setErrorMessage(undefined);
+      await sprintBacklogAPI.updateSprintBacklog(id, title, sprinttId, productBacklogId, status, priority, assignee, description);
       setIsCreated(true);
     } catch (error: any) {
       setErrorMessage(error.message);
@@ -312,5 +327,5 @@ export const useSprintBacklog = (): useSprintBacklog => {
     setActiveId(undefined);
   };
 
-  return { loading, errorMessage, isCreated, isDeleted, sprintBacklogData, removeAllSprintBacklogState, createSprintBacklog, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, getSprintBacklog, deleteSprintBacklog, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog };
+  return { loading, errorMessage, isCreated, isDeleted, sprintBacklogData, removeAllSprintBacklogState, createSprintBacklog, updateSprintBacklog, getSprintBacklogNotCorrespondingSprintList, getSprintBacklogList, getSprintBacklog, deleteSprintBacklog, handleDragOver, handleDragStart, handleDragEnd, activeId, sprintBacklog };
 };

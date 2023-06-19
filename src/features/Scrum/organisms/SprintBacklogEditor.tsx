@@ -17,14 +17,14 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
   const { sprintData, getSprintList } = useContext(SprintContext);
   const { userData, getUserList } = useContext(UserContext);
   const { productBacklogData, getProductBacklogList } = useContext(ProductBacklogContext);
-  const { createSprintBacklog, isCreated, isDeleted, sprintBacklog, getSprintBacklog, deleteSprintBacklog } = useContext(SprintBacklogContext);
+  const { createSprintBacklog, updateSprintBacklog, isCreated, isDeleted, sprintBacklog, getSprintBacklog, deleteSprintBacklog } = useContext(SprintBacklogContext);
 
   const [title, setTitle] = useState<string>('');
-  const [correspondingProductBacklog, setCorrespondingProductBacklog] = useState<string | undefined>(undefined);
-  const [correspondingSprint, setCorrespondingSprint] = useState<string | undefined>(undefined);
+  const [correspondingProductBacklog, setCorrespondingProductBacklog] = useState<string | undefined>("");
+  const [correspondingSprint, setCorrespondingSprint] = useState<string | undefined>("");
   const [status, setStatus] = useState<number>(0);
   const [priority, setPriority] = useState<number>(0);
-  const [assignee, setAssignee] = useState<string | undefined>(undefined);
+  const [assignee, setAssignee] = useState<string | undefined>("");
   const [description, setDescription] = useState<string | undefined>('');
 
   // modal
@@ -62,7 +62,7 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
     if (isCreate) {
       createSprintBacklog(title, correspondingSprint, correspondingProductBacklog, status, priority, assignee, description);
     } else {
-      // TODO: update
+      updateSprintBacklog(sprintBacklogId as string, title, correspondingSprint, correspondingProductBacklog, status, priority, assignee, description);
     }
   };
 
@@ -110,7 +110,7 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
           </div>
           <div className='col-span-2'>
             <label htmlFor="sprint" className='text-sm'>プロダクトバックログアイテム</label>
-            <select name="sprint" id="sprint" className='w-full border border-gray-300 rounded-md p-2 mt-1' value={correspondingProductBacklog} onChange={(e) => { setCorrespondingProductBacklog(e.target.value) }}>
+            <select name="sprint" id="sprint" className='w-full border border-gray-300 rounded-md p-2 mt-1' value={correspondingProductBacklog ?? ''} onChange={(e) => { setCorrespondingProductBacklog(e.target.value) }}>
               <option value={undefined}>紐付けなし</option>
               {productBacklogData && productBacklogData.length > 0 && (
                 productBacklogData.map((productBacklog, index) => (
@@ -121,7 +121,7 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
           </div>
           <div>
             <label htmlFor="sprint" className='text-sm'>対応スプリント</label>
-            <select name="sprint" id="sprint" className='w-full border border-gray-300 rounded-md p-2 mt-1' value={correspondingSprint} onChange={(e) => { setCorrespondingSprint(e.target.value) }}>
+            <select name="sprint" id="sprint" className='w-full border border-gray-300 rounded-md p-2 mt-1' value={correspondingSprint ?? ''} onChange={(e) => { setCorrespondingSprint(e.target.value) }}>
               <option value={undefined}>紐付けなし</option>
               {sprintData && sprintData.length > 0 && (
                 sprintData.map((sprint, index) => (
@@ -149,7 +149,7 @@ export const SprintBacklogEditor: React.FC<Props> = (props) => {
           </div>
           <div>
             <label htmlFor="assignee" className='text-sm'>担当者</label>
-            <select name="assignee" id="assignee" className='w-full border border-gray-300 rounded-md p-2 mt-1' value={assignee} onChange={(e) => { setAssignee(e.target.value) }}>
+            <select name="assignee" id="assignee" className='w-full border border-gray-300 rounded-md p-2 mt-1' value={assignee ?? ''} onChange={(e) => { setAssignee(e.target.value) }}>
               <option value={undefined}>未割り当て</option>
               {userData && userData.length > 0 && (
                 userData.map((user, index) => (
