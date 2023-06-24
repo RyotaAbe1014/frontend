@@ -9,7 +9,7 @@ const requireTokenApi: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 2000,
+  timeout: 3000,
 });
 
 requireTokenApi.interceptors.request.use(async (config) => {

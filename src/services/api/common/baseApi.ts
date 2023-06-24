@@ -6,5 +6,5 @@ export const baseAPI: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 2000,
+  timeout: 3000,
 });
