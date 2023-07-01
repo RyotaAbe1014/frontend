@@ -6,10 +6,10 @@ import { baseAPI } from "./baseApi";
 // Create an axios instance
 const requireTokenApi: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_ENDPOINT,
+  timeout: 50000,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 3000,
 });
 
 requireTokenApi.interceptors.request.use(async (config) => {
