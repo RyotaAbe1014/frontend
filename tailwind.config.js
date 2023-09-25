@@ -9,4 +9,7 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  content: [
+    './stories/**/*.{js,ts,jsx,tsx}',
+  ]
 }

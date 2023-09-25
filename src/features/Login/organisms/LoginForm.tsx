@@ -1,9 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from "../../../services/hooks/auth/useAuth";
-
-import "tailwindcss/tailwind.css";
 
 export const LoginForm: React.FC = () => {
 
@@ -16,16 +13,16 @@ export const LoginForm: React.FC = () => {
   };
   return (
     <>
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="pt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleSubmit}>
           {errorMessage && (
             <div className="text-red-500 text-sm">{errorMessage}</div>
           )}
           <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-              Email address
+              Your Email
             </label>
-            <div className="mt-2">
+            <div className="pt-2">
               <input
                 id="email"
                 name="email"
@@ -43,7 +40,7 @@ export const LoginForm: React.FC = () => {
                 Password
               </label>
             </div>
-            <div className="mt-2">
+            <div className="pt-2">
               <input
                 id="password"
                 name="password"
@@ -55,7 +52,7 @@ export const LoginForm: React.FC = () => {
               />
             </div>
           </div>
-          <div>
+          <div className="pt-3">
             <button
               type="submit"
               disabled={loading}
