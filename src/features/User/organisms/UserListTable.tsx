@@ -1,15 +1,22 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { User } from '../../../types/user/user';
 import { UserContext } from '../../../services/contexts/user/UserContext';
+import { Button } from '../../../common/_components/_atoms/Button/Button';
+import { UserEditModal } from './UserEditModal';
+import { FaPlus } from 'react-icons/fa';
 
 const UserListTable: React.FC = () => {
 
   const { userData, getUserList } = useContext(UserContext);
-
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getUserList();
   }, []);
+
+  const handleModal = (): void => {
+    setIsOpen(!isOpen);
+  }
 
 
   return (
@@ -28,44 +35,51 @@ const UserListTable: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {userData && userData.length > 0 ? (
-                  <>
-                    {userData.map((user: User, index) => (
-                      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-                        <td className="py-3 px-6 text-left whitespace-nowrap">
-                          <div className="flex text-left">
-                            <span className="font-medium">{user.username}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-6 text-left">
-                          <div className="flex items-center">
-                            <span>{user.email}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-6 text-left">
-                          <div className="flex items-center">
-                            <span>{user.createdAt.split('T')[0]}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-6 text-left">
-                          <div className="flex items-center">
-                            <span>{user.updatedAt.split('T')[0]}</span>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </>
-                )
-                  : (
-                    <tr>
-                      <td colSpan={7} className="py-3 px-6 text-center">ユーザーが見つかりませんでした</td>
+                <>
+                  {userData?.map((user: User, index) => (
+                    <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+                      <td className="py-3 px-6 text-left whitespace-nowrap">
+                        <div className="flex text-left">
+                          <span className="font-medium">{user.username}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-6 text-left">
+                        <div className="flex items-center">
+                          <span>{user.email}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-6 text-left">
+                        <div className="flex items-center">
+                          <span>{user.createdAt.split('T')[0]}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-6 text-left">
+                        <div className="flex items-center">
+                          <span>{user.updatedAt.split('T')[0]}</span>
+                        </div>
+                      </td>
                     </tr>
-                  )}
+                  ))}
+                </>
+                <tr>
+                  <td colSpan={7} className="py-3 px-6">
+                    <Button onClick={handleModal} customClass='flex items-center mx-auto'>
+                      <FaPlus />
+                      <p className='ml-1'>ユーザーを追加する</p>
+                    </Button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+      {/* モーダル */}
+      <UserEditModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        isCreate={true}
+      />
     </>
   )
 }
