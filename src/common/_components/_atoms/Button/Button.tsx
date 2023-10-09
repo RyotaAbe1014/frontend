@@ -1,47 +1,28 @@
 import React from 'react';
 
-interface ButtonProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean;
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string;
-  /**
-   * How large should the button be?
-   */
+interface Props {
+  color?: string;
+  customClass?: string;
   size?: 'small' | 'medium' | 'large';
-  /**
-   * Button contents
-   */
-  label: string;
-  /**
-   * Optional click handler
-   */
+  children: React.ReactNode;
   onClick?: () => void;
 }
 
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
-  label,
-  ...props
-}: ButtonProps) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+export const Button: React.FC<Props> = (props) => {
+  // propsから全て取り出す
+  const { children, onClick, color, size, customClass } = props;
+
+  const className = `bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ${customClass}`;
+
   return (
     <button
-      type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={{ backgroundColor }}
-      {...props}
+      className={className}
+      onClick={onClick}
     >
-      {label}
+      {children}
     </button>
   );
 };

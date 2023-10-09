@@ -1,5 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-
+import React, { useState, FormEvent } from "react";
 import { useAuth } from "../../../services/hooks/auth/useAuth";
 
 export const LoginForm: React.FC = () => {
@@ -7,10 +6,12 @@ export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { login, loading, errorMessage } = useAuth();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await login(email, password);
   };
+
   return (
     <>
       <div className="pt-10 sm:mx-auto sm:w-full sm:max-w-sm">
